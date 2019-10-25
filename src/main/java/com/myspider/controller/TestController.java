@@ -1,5 +1,8 @@
 package com.myspider.controller;
 
+import com.myspider.service.TaobaoProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,10 +12,13 @@ import java.util.HashMap;
 @RequestMapping("test")
 public class TestController {
 
-    @RequestMapping("test1")
+    @Autowired
+    private TaobaoProductService taobaoProductService;
+
+    @GetMapping("test1")
     public HashMap test(){
         HashMap<String,Object > resultMap =new HashMap<>();
-        resultMap.put("data",1);
+        resultMap = taobaoProductService.getTaobaoProduct("手表");
         return resultMap;
     }
 }
