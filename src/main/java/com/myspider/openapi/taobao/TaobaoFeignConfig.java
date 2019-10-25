@@ -21,11 +21,10 @@ public class TaobaoFeignConfig {
             if (response.status() == 500) {
                 try {
                     String error = objectReader.readValue(response.body().asInputStream());
-                    log.error("Tapp-point remote invocation error:" + error);
+                    log.error("[Myspider] remote invocation error:" + error);
                     //throw new RemoteInvocationException(ErrorCodeEnum.POINT_EXCHANGE_FAIL);
-
                 } catch (IOException e) {
-                    log.warn("Could not read error details");
+                    log.warn("[Myspider] Could not read error details");
                     //throw new RemoteInvocationException(ErrorCodeEnum.POINT_EXCHANGE_FAIL);
                 }
             }
