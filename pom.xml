@@ -33,7 +33,6 @@
         <opentracing.spring.web.starter.version>0.3.3</opentracing.spring.web.starter.version>
     </properties>
 
-
     <dependencies>
 
         <dependency>
@@ -121,7 +120,6 @@
             <version>0.7.3</version>
         </dependency>
 
-
         <!-- https://mvnrepository.com/artifact/us.codecraft/webmagic-extension -->
         <dependency>
             <groupId>us.codecraft</groupId>
@@ -155,9 +153,32 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${jwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${hikari.version}</version>
+        </dependency>
 
     </dependencies>
-
-
-
 </project>
