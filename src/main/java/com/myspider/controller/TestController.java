@@ -154,11 +154,18 @@ public class TestController {
 
                     // 第六步 把最质的淘宝url存到输出文件中
                     if(FileUtils.isExists(outPutPath)){
-                        FileUtils.writeText(outPutPath,lowestTaobaoProductData.getUrl(),true);
+
+                        if(lowestTaobaoProductData.getUrl().startsWith("http://")){
+                            log.info("最后得到的宝淘地址为======"+lowestTaobaoProductData.getUrl());
+                            FileUtils.writeText(outPutPath,lowestTaobaoProductData.getUrl(),true);
+                        }
+                        else{
+                            log.info("最后得到的宝淘地址为======"+"http://"+lowestTaobaoProductData.getUrl());
+                            FileUtils.writeText(outPutPath,"http://"+lowestTaobaoProductData.getUrl(),true);
+                        }
                     }
 
                 });
-
             }
         }
 
