@@ -154,6 +154,7 @@ public class FileUtils {
             outputStreamWriter = new OutputStreamWriter(outputStream);
             bufferedWriter = new BufferedWriter(outputStreamWriter);
             bufferedWriter.write(content);
+            bufferedWriter.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }finally {

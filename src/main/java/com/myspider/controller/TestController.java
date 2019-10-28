@@ -106,6 +106,7 @@ public class TestController {
                         }
                         catch (Exception e){
                             log.error("taobaoProductInfoResponse.getData()，有可能无数据，这样，data=‘搜索成功，但无结果’ ");
+                            log.error("翻到了第"+i+"页，已经无数据，这样，taobaoProductInfoResponse.data=‘搜索成功，但无结果’ ");
                             //跳出循环
                             break;
                         }
@@ -160,8 +161,8 @@ public class TestController {
                             FileUtils.writeText(outPutPath,lowestTaobaoProductData.getUrl(),true);
                         }
                         else{
-                            log.info("最后得到的宝淘地址为======"+"http://"+lowestTaobaoProductData.getUrl());
-                            FileUtils.writeText(outPutPath,"http://"+lowestTaobaoProductData.getUrl(),true);
+                            log.info("最后得到的宝淘地址为======"+"http:"+lowestTaobaoProductData.getUrl());
+                            FileUtils.writeText(outPutPath,"http:"+lowestTaobaoProductData.getUrl(),true);
                         }
                     }
 
