@@ -99,34 +99,47 @@ public class TestController {
                     for(int i=minPageNumber;i<=maxPageNumber;i++){
 
                         //  第一层限定，找到的淘宝商品是小于等于我拼多多的商品的价格的
-                        TaobaoProductInfoFeignResponse  taobaoProductInfoResponse =   taobaoProductService.getTaobaoProduct(goodsName,"1",goodsPrice,i,"sale-desc");
+                        TaobaoProductInfoFeignResponse  taobaoProductInfoResponse =  null;
 
-                        List<TaobaoProductInfoFeignData> taobaoProductInfoFeignDataList = taobaoProductInfoResponse.getData();
-
-                        if(null != taobaoProductInfoFeignDataList && taobaoProductInfoFeignDataList.size()>0){
-
-                            taobaoProductInfoFeignDataList.forEach(taobaoProductInfoFeignData ->{
-
-                                // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 start
-                                String taobaoGoodsId = taobaoProductInfoFeignData.getId();
-
-                                TaobaoProductDetailFeignResponse taobaoProductDetailFeignResponse = taobaoProductService.findProductDetail(taobaoGoodsId);
-                                if(null != taobaoProductDetailFeignResponse.getData() &&  null != taobaoProductDetailFeignResponse.getData().getItem()){
-
-                                    String delivery = taobaoProductDetailFeignResponse.getData().getItem().getDelivery();
-
-                                    if("免运费".equals(delivery) || "0.00".equals(delivery) && !"0人付款".equals(taobaoProductInfoFeignData.getSales()) ){
-                                        taobaoProductInfoDataList.add(taobaoProductInfoFeignData);
-                                    }
-                                }
-                                // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 end
-
-                            });
-
+                        try{
+                            taobaoProductInfoResponse = taobaoProductService.getTaobaoProduct(goodsName,"1",goodsPrice,i,"sale-desc");
+                        }
+                        catch (Exception e){
+                            log.error("taobaoProductInfoResponse.getData()，有可能无数据，这样，data=‘搜索成功，但无结果’ ");
+                            //跳出循环
+                            break;
                         }
 
-                        if(!taobaoProductInfoResponse.getHasNext()){
-                            break;
+                        List<TaobaoProductInfoFeignData> taobaoProductInfoFeignDataList = null;
+
+                        if(null != taobaoProductInfoResponse && null != taobaoProductInfoResponse.getData()){
+
+                            taobaoProductInfoFeignDataList = taobaoProductInfoResponse.getData();
+
+                            if(null != taobaoProductInfoFeignDataList && taobaoProductInfoFeignDataList.size()>0){
+
+                                taobaoProductInfoFeignDataList.forEach(taobaoProductInfoFeignData ->{
+
+                                    // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 start
+                                    String taobaoGoodsId = taobaoProductInfoFeignData.getId();
+
+                                    TaobaoProductDetailFeignResponse taobaoProductDetailFeignResponse = taobaoProductService.findProductDetail(taobaoGoodsId);
+                                    if(null != taobaoProductDetailFeignResponse.getData() &&  null != taobaoProductDetailFeignResponse.getData().getItem()){
+
+                                        String delivery = taobaoProductDetailFeignResponse.getData().getItem().getDelivery();
+
+                                        if("免运费".equals(delivery) || "0.00".equals(delivery) && !"0人付款".equals(taobaoProductInfoFeignData.getSales()) ){
+                                            taobaoProductInfoDataList.add(taobaoProductInfoFeignData);
+                                        }
+                                    }
+                                    // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 end
+
+                                });
+
+                            }
+                            /* if(!taobaoProductInfoResponse.getHasNext()){
+                                break;
+                            }*/
                         }
                     }
                     //第四步，通过第三方平台的API(淘宝商品) end
