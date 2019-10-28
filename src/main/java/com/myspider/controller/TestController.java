@@ -149,19 +149,18 @@ public class TestController {
                     taobaoProductInfoDataList.sort((TaobaoProductInfoFeignData data1,TaobaoProductInfoFeignData data2)->
                             Double.valueOf(data1.getPrice()).compareTo(Double.valueOf(data2.getPrice())   )  );
 
-
                     TaobaoProductInfoFeignData lowestTaobaoProductData = taobaoProductInfoDataList.get(0);
                     //第五步 最后按这个要求对比，从有销量的商品中，再找一个价格最低的那个淘宝网址就是想要的 end
 
-                    // 第六步 把最质的淘宝url存到输出文件中
+                    // 第六步 把最优质的淘宝url存到输出文件中
                     if(FileUtils.isExists(outPutPath)){
 
                         if(lowestTaobaoProductData.getUrl().startsWith("http://")){
-                            log.info("最后得到的宝淘地址为======"+lowestTaobaoProductData.getUrl());
+                            log.info("最后得到的最优质的淘宝地址为======"+lowestTaobaoProductData.getUrl());
                             FileUtils.writeText(outPutPath,lowestTaobaoProductData.getUrl(),true);
                         }
                         else{
-                            log.info("最后得到的宝淘地址为======"+"http:"+lowestTaobaoProductData.getUrl());
+                            log.info("最后得到的最优质的淘宝地址为======"+"http:"+lowestTaobaoProductData.getUrl());
                             FileUtils.writeText(outPutPath,"http:"+lowestTaobaoProductData.getUrl(),true);
                         }
                     }
