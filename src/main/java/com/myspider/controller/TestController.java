@@ -83,8 +83,8 @@ public class TestController {
                                 log.info("拼多多的商品名称是======{}",goodsName);
                                 goodsDes =  response.getData().getItem().getGoodsDesc();
                                 log.info("拼多多的商品描述是======{}",goodsDes);
-                                goodsPrice =  response.getData().getItem().getMaxNormalPrice();
-                                log.info("拼多多的商品的标准价格是======{}",goodsPrice);
+                                goodsPrice =  response.getData().getItem().getMinGroupPrice();
+                                log.info("拼多多的商品的最低组合价格是======{}",goodsPrice);
                             }
                         }
                     }
@@ -98,30 +98,44 @@ public class TestController {
 
                         TaobaoProductInfoFeignResponse  taobaoProductInfoResponse =   taobaoProductService.getTaobaoProduct(goodsName,"1",goodsPrice,i,"sale-desc");
 
-                        if(null != taobaoProductInfoResponse.getData()){
+                        List<TaobaoProductInfoFeignData> taobaoProductInfoFeignDataList = taobaoProductInfoResponse.getData();
 
-                            // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的，扔到taobaoProductInfoDataList 集合里面 start
-                            String taobaoGoodsId = taobaoProductInfoResponse.getData().getId();
+                        if(null != taobaoProductInfoFeignDataList && taobaoProductInfoFeignDataList.size()>0){
 
-                            TaobaoProductDetailFeignResponse taobaoProductDetailFeignResponse = taobaoProductService.findProductDetail(taobaoGoodsId);
-                            if(null != taobaoProductDetailFeignResponse.getData() &&  null != taobaoProductDetailFeignResponse.getData().getItem()){
+                            taobaoProductInfoFeignDataList.forEach(taobaoProductInfoFeignData ->{
 
-                                String delivery = taobaoProductDetailFeignResponse.getData().getItem().getDelivery();
+                                // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的，扔到taobaoProductInfoDataList 集合里面 start
+                                String taobaoGoodsId = taobaoProductInfoFeignData.getId();
 
-                                if("免运费".equals(delivery)|| "0.00".equals(delivery) ){
-                                    taobaoProductInfoDataList.add(taobaoProductInfoResponse.getData());
+                                TaobaoProductDetailFeignResponse taobaoProductDetailFeignResponse = taobaoProductService.findProductDetail(taobaoGoodsId);
+                                if(null != taobaoProductDetailFeignResponse.getData() &&  null != taobaoProductDetailFeignResponse.getData().getItem()){
+
+                                    String delivery = taobaoProductDetailFeignResponse.getData().getItem().getDelivery();
+
+                                    if("免运费".equals(delivery) || "0.00".equals(delivery) ){
+                                        taobaoProductInfoDataList.add(taobaoProductInfoFeignData);
+                                    }
                                 }
-                            }
-                            // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的，扔到taobaoProductInfoDataList 集合里面 end
+                                // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的，扔到taobaoProductInfoDataList 集合里面 end
+
+                            });
+
                         }
 
-
+                        if(!taobaoProductInfoResponse.getHasNext()){
+                            break;
+                        }
                     }
-
-
                     //第四步，通过第三方平台的API(淘宝商品) end
 
+                    //第五步 最后按这个要求对比，从有销量的商品中，再找一个价格最低的那个淘宝网址就是想要的 start
+                    if(null != taobaoProductInfoDataList && taobaoProductInfoDataList.size() >0){
+                        taobaoProductInfoDataList.forEach( taobaoProductInfoFeignData ->{
 
+                        } );
+                    }
+
+                    //第五步 最后按这个要求对比，从有销量的商品中，再找一个价格最低的那个淘宝网址就是想要的 end
 
                 });
 
@@ -130,6 +144,5 @@ public class TestController {
 
         return resultMap;
     }
-
 
 }

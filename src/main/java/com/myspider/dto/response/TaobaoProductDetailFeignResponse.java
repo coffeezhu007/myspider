@@ -1,5 +1,6 @@
 package com.myspider.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,8 @@ public class TaobaoProductDetailFeignResponse implements Serializable {
     private Integer page;   // 翻页值
     private String  version;   // 页数
     private String retcode;   // 返回状态码
+
+    @JsonProperty("data")
     private TaobaoProductDetailFeignData data;
 
 }

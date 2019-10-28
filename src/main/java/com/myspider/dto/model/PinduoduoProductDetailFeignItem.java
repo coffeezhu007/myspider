@@ -23,6 +23,10 @@ public class PinduoduoProductDetailFeignItem implements Serializable {
 
     private String marketPrice; //市场价格
 
+    private String maxGroupPrice; //最高组合价（团购价）
+
+    private String minGroupPrice; //最低组合价（团购价）
+
     private String thumbUrl; //图片地址
 
 }
