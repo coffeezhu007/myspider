@@ -1,10 +1,12 @@
 package com.myspider.service;
 
+import com.myspider.dto.response.PinduoduoProductDetailFeignResponse;
+
 import java.util.HashMap;
 
 public interface PinduoduoProductService {
 
-    HashMap<String,Object> findProductDetail(Long goodsId);
+    PinduoduoProductDetailFeignResponse findProductDetail(Long goodsId);
 
 
 }

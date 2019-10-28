@@ -1,5 +1,6 @@
 package com.myspider.service.impl;
 
+import com.myspider.dto.response.PinduoduoProductDetailFeignResponse;
 import com.myspider.openapi.pinduoduo.PinduoduoFeignClient;
 import com.myspider.service.PinduoduoProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +22,11 @@ public class PinduoduoProductServiceImpl implements PinduoduoProductService {
 
 
     @Override
-    public HashMap<String, Object> findProductDetail(Long goodsId) {
+    public PinduoduoProductDetailFeignResponse findProductDetail(Long goodsId) {
 
-        HashMap<String,Object> productMap = pinduoduoFeignClient.findProductDetail(apiKey,goodsId);
+        PinduoduoProductDetailFeignResponse  response = pinduoduoFeignClient.findProductDetail(apiKey,goodsId);
 
-        return productMap;
+        return response;
 
     }
 

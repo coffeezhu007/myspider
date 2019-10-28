@@ -1,5 +1,6 @@
 package com.myspider.openapi.pinduoduo;
 
+import com.myspider.dto.response.PinduoduoProductDetailFeignResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,6 @@ public interface PinduoduoFeignClient {
     *@Date:15:16 15:16
     */
     @GetMapping("/pdd/detail")
-    HashMap<String, Object> findProductDetail(@RequestParam("apikey") String apiKey, @RequestParam("itemid") Long goodsId);
+    PinduoduoProductDetailFeignResponse findProductDetail(@RequestParam("apikey") String apiKey, @RequestParam("itemid") Long goodsId);
 
 }
