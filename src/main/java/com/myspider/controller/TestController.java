@@ -29,7 +29,7 @@ public class TestController {
     @GetMapping("test2")
     public HashMap test2(){
         HashMap<String,Object > resultMap =new HashMap<>();
-        resultMap = pinduoduoProductService.getPinduoduoProduct("手表");
+        resultMap = pinduoduoProductService.findProductDetail(5914165983l);
         return resultMap;
     }
 }

@@ -4,5 +4,7 @@ import java.util.HashMap;
 
 public interface PinduoduoProductService {
 
-    HashMap<String,Object> getPinduoduoProduct(String keyword);
+    HashMap<String,Object> findProductDetail(Long goodsId);
+
+
 }

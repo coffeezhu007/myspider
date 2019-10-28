@@ -19,11 +19,15 @@ public class PinduoduoProductServiceImpl implements PinduoduoProductService {
     @Autowired
     private PinduoduoFeignClient pinduoduoFeignClient;
 
-    @Override
-    public HashMap<String, Object> getPinduoduoProduct(String keyword) {
 
-        HashMap<String,Object> productMap = pinduoduoFeignClient.findProductInfo(apiKey,"手表");
+    @Override
+    public HashMap<String, Object> findProductDetail(Long goodsId) {
+
+        HashMap<String,Object> productMap = pinduoduoFeignClient.findProductDetail(apiKey,goodsId);
 
         return productMap;
+
     }
+
+
 }

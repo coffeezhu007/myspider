@@ -18,10 +18,10 @@ public interface PinduoduoFeignClient {
 
     /**
     *@Author:朱振兴
-    *@Description:调用拼多多第三方接口的FeignClient
+    *@Description:调用拼多多第三方接口的FeignClient---商品详情
     *@Date:15:16 15:16
     */
-    @GetMapping("/pdd/search")
-    HashMap<String, Object> findProductInfo(@RequestParam("apikey") String apiKey, @RequestParam("keyword") String keyword);
+    @GetMapping("/pdd/detail")
+    HashMap<String, Object> findProductDetail(@RequestParam("apikey") String apiKey, @RequestParam("itemid") Long goodsId);
 
 }
