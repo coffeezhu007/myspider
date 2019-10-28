@@ -1,4 +1,4 @@
-package com.myspider.openapi.taobao;
+package com.myspider.openapi.pinduoduo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import java.io.IOException;
 
 @Slf4j
-public class TaobaoFeignConfig {
+public class PinduoduoFeignConfig {
 
     @Bean
     public ErrorDecoder errorDecoder() {

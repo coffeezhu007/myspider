@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-@FeignClient(name = "taobaoFeignClient", url = "${endpoint.99api.taobao.url}", configuration =
+@FeignClient(name = "taobaoFeignClient", url = "${endpoint.99api.url}", configuration =
         TaobaoFeignConfig.class)
 @RequestMapping(consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
 public interface TaobaoFeignClient {
@@ -23,7 +23,7 @@ public interface TaobaoFeignClient {
     *@Date:15:16 15:16
     */
 
-    @GetMapping("/search")
-    HashMap<String, Object> findTipperPointInfo(@RequestParam("apikey") String apiKey,@RequestParam("keyword") String keyword);
+    @GetMapping("/taobao/search")
+    HashMap<String, Object> findProductInfo(@RequestParam("apikey") String apiKey,@RequestParam("keyword") String keyword);
 
 }

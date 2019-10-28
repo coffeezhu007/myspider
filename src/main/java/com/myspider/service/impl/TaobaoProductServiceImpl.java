@@ -21,7 +21,7 @@ public class TaobaoProductServiceImpl implements TaobaoProductService {
 
     @Override
     public HashMap<String, Object> getTaobaoProduct(String keyword) {
-        HashMap<String, Object> taobaoMap = taobaoFeignClient.findTipperPointInfo(apiKey,"手表");
+        HashMap<String, Object> taobaoMap = taobaoFeignClient.findProductInfo(apiKey,"手表");
         return taobaoMap;
     }
 }

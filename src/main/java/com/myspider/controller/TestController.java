@@ -1,5 +1,6 @@
 package com.myspider.controller;
 
+import com.myspider.service.PinduoduoProductService;
 import com.myspider.service.TaobaoProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +16,20 @@ public class TestController {
     @Autowired
     private TaobaoProductService taobaoProductService;
 
+    @Autowired
+    private PinduoduoProductService pinduoduoProductService;
+
     @GetMapping("test1")
     public HashMap test(){
         HashMap<String,Object > resultMap =new HashMap<>();
         resultMap = taobaoProductService.getTaobaoProduct("手表");
+        return resultMap;
+    }
+
+    @GetMapping("test2")
+    public HashMap test2(){
+        HashMap<String,Object > resultMap =new HashMap<>();
+        resultMap = pinduoduoProductService.getPinduoduoProduct("手表");
         return resultMap;
     }
 }
