@@ -52,6 +52,8 @@ public class TestController {
         HashMap<String,Object > resultMap =new HashMap<>();
 
         String taskPath = "C:\\work\\Git\\respositry\\myspider\\myspider\\src\\main\\resources\\task\\spider_product.txt";
+        String outPutPath = "C:\\work\\Git\\respositry\\myspider\\myspider\\src\\main\\resources\\result\\taobao_best_product.txt";
+
 
         // 如果任务文件存在，刚把文件里每一个url的最后一段读出来
         if(FileUtils.isExists(taskPath)){
@@ -96,6 +98,7 @@ public class TestController {
 
                     for(int i=minPageNumber;i<=maxPageNumber;i++){
 
+                        //  第一层限定，找到的淘宝商品是小于等于我拼多多的商品的价格的
                         TaobaoProductInfoFeignResponse  taobaoProductInfoResponse =   taobaoProductService.getTaobaoProduct(goodsName,"1",goodsPrice,i,"sale-desc");
 
                         List<TaobaoProductInfoFeignData> taobaoProductInfoFeignDataList = taobaoProductInfoResponse.getData();
@@ -104,7 +107,7 @@ public class TestController {
 
                             taobaoProductInfoFeignDataList.forEach(taobaoProductInfoFeignData ->{
 
-                                // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的，扔到taobaoProductInfoDataList 集合里面 start
+                                // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 start
                                 String taobaoGoodsId = taobaoProductInfoFeignData.getId();
 
                                 TaobaoProductDetailFeignResponse taobaoProductDetailFeignResponse = taobaoProductService.findProductDetail(taobaoGoodsId);
@@ -112,11 +115,11 @@ public class TestController {
 
                                     String delivery = taobaoProductDetailFeignResponse.getData().getItem().getDelivery();
 
-                                    if("免运费".equals(delivery) || "0.00".equals(delivery) ){
+                                    if("免运费".equals(delivery) || "0.00".equals(delivery) && !"0人付款".equals(taobaoProductInfoFeignData.getSales()) ){
                                         taobaoProductInfoDataList.add(taobaoProductInfoFeignData);
                                     }
                                 }
-                                // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的，扔到taobaoProductInfoDataList 集合里面 end
+                                // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 end
 
                             });
 
@@ -129,13 +132,17 @@ public class TestController {
                     //第四步，通过第三方平台的API(淘宝商品) end
 
                     //第五步 最后按这个要求对比，从有销量的商品中，再找一个价格最低的那个淘宝网址就是想要的 start
-                    if(null != taobaoProductInfoDataList && taobaoProductInfoDataList.size() >0){
-                        taobaoProductInfoDataList.forEach( taobaoProductInfoFeignData ->{
+                    taobaoProductInfoDataList.sort((TaobaoProductInfoFeignData data1,TaobaoProductInfoFeignData data2)->
+                            Double.valueOf(data1.getPrice()).compareTo(Double.valueOf(data2.getPrice())   )  );
 
-                        } );
-                    }
 
+                    TaobaoProductInfoFeignData lowestTaobaoProductData = taobaoProductInfoDataList.get(0);
                     //第五步 最后按这个要求对比，从有销量的商品中，再找一个价格最低的那个淘宝网址就是想要的 end
+
+                    // 第六步 把最质的淘宝url存到输出文件中
+                    if(FileUtils.isExists(outPutPath)){
+                        FileUtils.writeText(outPutPath,lowestTaobaoProductData.getUrl(),true);
+                    }
 
                 });
 
