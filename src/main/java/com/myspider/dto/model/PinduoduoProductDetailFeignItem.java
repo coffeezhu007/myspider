@@ -15,14 +15,14 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PinduoduoProductDetailFeignItem implements Serializable {
 
-    private String goodsName;
+    private String goodsName; //商品名称
 
-    private String goodsDesc;
+    private String goodsDesc; //商品描述
 
-    private String maxNormalPrice;
+    private String maxNormalPrice; //标准价格
 
-    private String marketPrice;
+    private String marketPrice; //市场价格
 
-    private String thumbUrl;
+    private String thumbUrl; //图片地址
 
 }

@@ -1,5 +1,7 @@
 package com.myspider.openapi.taobao;
 
+import com.myspider.dto.response.TaobaoProductDetailFeignResponse;
+import com.myspider.dto.response.TaobaoProductInfoFeignResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,12 @@ public interface TaobaoFeignClient {
     */
 
     @GetMapping("/taobao/search")
-    HashMap<String, Object> findProductInfo(@RequestParam("apikey") String apiKey,@RequestParam("keyword") String keyword);
+    TaobaoProductInfoFeignResponse findProductInfo(@RequestParam("apikey") String apiKey, @RequestParam("keyword") String keyword,
+                                                   @RequestParam("startPrice") String startPrice,@RequestParam("endPrice") String endPrice,
+                                                   @RequestParam("page") Integer page,@RequestParam("order") String order);
+
+
+    @GetMapping("/taobao/detail")
+    TaobaoProductDetailFeignResponse findProductDetail(@RequestParam("apikey") String apiKey, @RequestParam("itemid") String itemId);
 
 }
