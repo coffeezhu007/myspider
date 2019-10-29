@@ -155,13 +155,13 @@ public class TestController {
                     // 第六步 把最优质的淘宝url存到输出文件中
                     if(FileUtils.isExists(outPutPath)){
 
-                        if(lowestTaobaoProductData.getUrl().startsWith("http://")){
+                        if(lowestTaobaoProductData.getUrl().startsWith("http://")  || lowestTaobaoProductData.getUrl().startsWith("https://") ){
                             log.info("最后得到的最优质的淘宝地址为======"+lowestTaobaoProductData.getUrl());
                             FileUtils.writeText(outPutPath,lowestTaobaoProductData.getUrl(),true);
                         }
                         else{
-                            log.info("最后得到的最优质的淘宝地址为======"+"http:"+lowestTaobaoProductData.getUrl());
-                            FileUtils.writeText(outPutPath,"http:"+lowestTaobaoProductData.getUrl(),true);
+                            log.info("最后得到的最优质的淘宝地址为======"+"https:"+lowestTaobaoProductData.getUrl());
+                            FileUtils.writeText(outPutPath,"https:"+lowestTaobaoProductData.getUrl(),true);
                         }
                     }
 
