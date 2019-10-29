@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class SpiderController {
 
-    @RequestMapping(name="/gospider",method = RequestMethod.GET)
+    @RequestMapping(value="/gospider",method = RequestMethod.GET)
     public String goSpider(){
-        return "forward:/spider.html";
+        return "spider";
     }
-
 
 }
