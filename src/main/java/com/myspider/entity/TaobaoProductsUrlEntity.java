@@ -12,11 +12,13 @@ public class TaobaoProductsUrlEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name="product_url")
-    private String productUrl;
+    @Column(name="pdd_product_url")
+    private String pddProductUrl;
+
+    @Column(name="taobao_product_url")
+    private String tapBaoProductUrl;
 
     @Column(name="spider_date")
     private Date spiderDate ;
-
 
 }

@@ -151,6 +151,7 @@ public class TestController {
                     //第五步 最后按这个要求对比，从有销量的商品中，再找一个价格最低的那个淘宝网址就是想要的 start
                     if(taobaoProductInfoDataList.size()==0 ){
                         resultMap.put("result","没有对比到淘宝数据");
+                        return;
                     }
 
                     taobaoProductInfoDataList.sort((TaobaoProductInfoFeignData data1,TaobaoProductInfoFeignData data2)->
