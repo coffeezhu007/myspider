@@ -4,21 +4,52 @@
     <meta charset="UTF-8">
     <title>拼多多---->淘宝数据收集</title>
 </head>
-<body>
-<h1 align="center">
-    拼多多---->淘宝数据收集
-</h1>
+    <h1 align="center">
+        拼多多---->淘宝数据收集
+    </h1>
+
+    <div><label><input type="file" id="pdd_product_file" ></label>  </div>
+    <button id="upload_btn" type="button">上传文件</button>
 
 
-<script type="text/javascript" src="static/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="static/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="static/js/ajaxfileupload.js"></script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    $(function(){
-        alert('11');
-    });
-</script>
+        // jq入口函数
+        $(function(){
+            console.log('111');
 
+            // 上传文件按钮事件
+            $("#upload_btn").bind('click',function(){
+
+                var formData = new FormData();
+                formData.append('pdd_product_file', $('#pdd_product_file')[0].files[0]);
+
+                $.ajax({
+                    url: 'upladPddfile',
+                    type: 'post',
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false
+                }).done(function(res) {
+                    if(res.status){
+                        alert("上传拼多多商品数据成功，后台程序进行对比淘宝商品！");
+                        // 再次发起另一个ajax进行商口对比
+                    }
+                    else{
+                        alert("上传拼多多商品数据失败!");
+                    }
+                }).fail(function(res) {
+                    alert("后台程序异常!");
+                });
+
+            })
+
+        });
+    </script>
 
 </body>
 </html>
