@@ -100,6 +100,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <version>${springboot.version}</version>
+        </dependency>
+
         <!--mysql驱动包-->
         <dependency>
             <groupId>mysql</groupId>
@@ -186,5 +192,7 @@
             <artifactId>logback-ext-spring</artifactId>
             <version>0.1.4</version>
         </dependency>
+
+
     </dependencies>
 </project>
