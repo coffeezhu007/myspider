@@ -24,5 +24,7 @@ public class TaobaoProductInfoFeignData  implements Serializable {
     private String[] imageUrls ;//图片链接
     private String sales;  //销量,如：3309人付款
     private String commentCount; //评论数量
-
+    private boolean isTmall; // 是否天猫
+    private String marketPrice; //市场价格
+    private String shopUrl; //店铺网址
 }
