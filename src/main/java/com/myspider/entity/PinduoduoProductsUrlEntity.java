@@ -18,6 +18,7 @@ public class PinduoduoProductsUrlEntity {
     @Column(name="spider_date")
     private Date spiderDate ;
 
-    private Integer status ;
+    @Column(name="status",length = 1)
+    private Integer status ;  // 1:代表已采集，0:代表示未采集
 
 }

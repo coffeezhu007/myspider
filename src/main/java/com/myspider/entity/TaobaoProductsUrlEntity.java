@@ -18,6 +18,5 @@ public class TaobaoProductsUrlEntity {
     @Column(name="spider_date")
     private Date spiderDate ;
 
-    private Integer status ;
 
 }
