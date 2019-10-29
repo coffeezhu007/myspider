@@ -34,6 +34,11 @@ public class TestController {
     @Value("${taobao.search.product.max.page.number:20}")
     private Integer maxPageNumber;
 
+    @Value("${server.pinduoduo.task.file}")
+    private String taskPath;
+
+    @Value("${server.taobao.result.file}")
+    private String outPutPath;
 
     @GetMapping("test1")
     public TaobaoProductInfoFeignResponse test(){
@@ -50,11 +55,6 @@ public class TestController {
     @GetMapping("test3")
     public HashMap test3(){
         HashMap<String,Object > resultMap =new HashMap<>();
-
-        String taskPath = "C:\\work\\Git\\respositry\\myspider\\myspider\\src\\main\\resources\\task\\spider_product.txt";
-        String outPutPath = "C:\\work\\Git\\respositry\\myspider\\myspider\\src\\main\\resources\\result\\taobao_best_product.txt";
-
-
         // 如果任务文件存在，刚把文件里每一个url的最后一段读出来
         if(FileUtils.isExists(taskPath)){
 
