@@ -70,6 +70,9 @@ public class TestController {
                     String [] urlSplit = urlText.split("\\?");
                     if(null != urlSplit && urlSplit.length >1){
                         goodsId = urlSplit[1];
+                        if(null != goodsId && goodsId.split("=").length >1 ){
+                            goodsId = goodsId.split("=")[1];
+                        }
                         log.info("拼多多的商品Id====={}",goodsId);
                     }
 
@@ -77,7 +80,7 @@ public class TestController {
                     String goodsName = "";
                     String goodsDes = "";
                     String goodsPrice = "";
-                    PinduoduoProductDetailFeignResponse response = pinduoduoProductService.findProductDetail(48495222275l);
+                    PinduoduoProductDetailFeignResponse response = pinduoduoProductService.findProductDetail(Long.valueOf(goodsId));
                     if("0000".equals(response.getRetcode())){
                         if(null !=   response.getData()){
                             if(null != response.getData().getItem()){
@@ -146,6 +149,10 @@ public class TestController {
                     //第四步，通过第三方平台的API(淘宝商品) end
 
                     //第五步 最后按这个要求对比，从有销量的商品中，再找一个价格最低的那个淘宝网址就是想要的 start
+                    if(taobaoProductInfoDataList.size()==0 ){
+                        resultMap.put("result","没有对比到淘宝数据");
+                    }
+
                     taobaoProductInfoDataList.sort((TaobaoProductInfoFeignData data1,TaobaoProductInfoFeignData data2)->
                             Double.valueOf(data1.getPrice()).compareTo(Double.valueOf(data2.getPrice())   )  );
 
@@ -158,10 +165,12 @@ public class TestController {
                         if(lowestTaobaoProductData.getUrl().startsWith("http://")  || lowestTaobaoProductData.getUrl().startsWith("https://") ){
                             log.info("最后得到的最优质的淘宝地址为======"+lowestTaobaoProductData.getUrl());
                             FileUtils.writeText(outPutPath,lowestTaobaoProductData.getUrl(),true);
+                            resultMap.put("result",lowestTaobaoProductData.getUrl());
                         }
                         else{
                             log.info("最后得到的最优质的淘宝地址为======"+"https:"+lowestTaobaoProductData.getUrl());
                             FileUtils.writeText(outPutPath,"https:"+lowestTaobaoProductData.getUrl(),true);
+                            resultMap.put("result","https:"+lowestTaobaoProductData.getUrl());
                         }
                     }
 

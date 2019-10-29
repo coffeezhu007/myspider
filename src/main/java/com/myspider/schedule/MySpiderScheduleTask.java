@@ -60,6 +60,10 @@ public class MySpiderScheduleTask {
                     String [] urlSplit = urlText.split("\\?");
                     if(null != urlSplit && urlSplit.length >1){
                         goodsId = urlSplit[1];
+
+                        if(null != goodsId && goodsId.split("=").length >1 ){
+                            goodsId = goodsId.split("=")[1];
+                        }
                         log.info("拼多多的商品Id====={}",goodsId);
                     }
 
@@ -67,7 +71,7 @@ public class MySpiderScheduleTask {
                     String goodsName = "";
                     String goodsDes = "";
                     String goodsPrice = "";
-                    PinduoduoProductDetailFeignResponse response = pinduoduoProductService.findProductDetail(48495222275l);
+                    PinduoduoProductDetailFeignResponse response = pinduoduoProductService.findProductDetail(Long.valueOf(goodsId));
                     if("0000".equals(response.getRetcode())){
                         if(null !=   response.getData()){
                             if(null != response.getData().getItem()){
