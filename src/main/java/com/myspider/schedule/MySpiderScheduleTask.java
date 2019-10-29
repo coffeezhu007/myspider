@@ -41,7 +41,7 @@ public class MySpiderScheduleTask {
     /**
      * 每五称执行一次
      */
-    @Scheduled(cron = "0/5 * * * * ?")
+    //@Scheduled(cron = "0/5 * * * * ?")
     public void getTaobaoBestProductUrl2File() {
 
         System.out.println("执行");
