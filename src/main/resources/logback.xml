@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <property resource="application.properties"/>
     <!--文件资源的引用-->
     <!--<property resource="app.properties"/>-->
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
-    <property name="log.path" value="C:/work/Git/respositry/myspider/src/main/resources/logs/" />
+    <!-- <property name="log.path" value="C:/work/Git/respositry/myspider/src/main/resources/logs/" />-->
 
     <!--输出到控制台-->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -23,7 +24,7 @@
     <!--输出到文件-->
     <appender name="DEFAULT-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}logback.%d{yyyy-MM-dd-HH-mm}.[%i].log</fileNamePattern>
+            <fileNamePattern>${server.project.log.dir}logback.%d{yyyy-MM-dd-HH-mm}.[%i].log</fileNamePattern>
             <!--日志文件保留天数-->
             <MaxHistory>30</MaxHistory>
             <maxFileSize>1MB</maxFileSize>
@@ -36,7 +37,7 @@
         </encoder>
     </appender>
 
-    <root level="${log.root.level}">
+    <root level="${server.project.log.root.level}">
         <appender-ref ref="CONSOLE"></appender-ref>
         <appender-ref ref="DEFAULT-APPENDER"></appender-ref>
     </root>

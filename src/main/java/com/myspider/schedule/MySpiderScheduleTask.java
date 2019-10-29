@@ -55,7 +55,6 @@ public class MySpiderScheduleTask {
 
                 taskUrlList.forEach(urlText ->{
                     log.info("拼多多的商品url====={}",urlText);
-
                     // 第二步，把其中最后一段参数拿出来
                     String goodsId = "";
                     String [] urlSplit = urlText.split("\\?");
