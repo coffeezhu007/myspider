@@ -3,7 +3,6 @@ package com.myspider.service;
 import com.myspider.dto.response.TaobaoProductDetailFeignResponse;
 import com.myspider.dto.response.TaobaoProductInfoFeignResponse;
 
-import java.util.HashMap;
 
 public interface TaobaoProductService {
 

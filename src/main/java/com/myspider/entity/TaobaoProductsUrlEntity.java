@@ -1,8 +1,18 @@
 package com.myspider.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.Date;
 
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 @Entity
 @Table(name="t_taobao_goods_url")
 public class TaobaoProductsUrlEntity {
@@ -21,4 +31,6 @@ public class TaobaoProductsUrlEntity {
     @Column(name="spider_date")
     private Date spiderDate ;
 
+    @Column(name="status",length = 1)
+    private Integer status ;  // 预留暂时没有使用
 }

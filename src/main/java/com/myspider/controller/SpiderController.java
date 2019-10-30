@@ -1,6 +1,7 @@
 package com.myspider.controller;
 
 import com.myspider.service.PinduoduoProductService;
+import com.myspider.service.SpiderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,9 @@ public class SpiderController {
 
     @Autowired
     private PinduoduoProductService pinduoduoProductService;
+
+    @Autowired
+    private SpiderService spiderService;
 
     @Value("${spring.servlet.multipart.location}")
     private String upladFileDir;
@@ -70,11 +74,30 @@ public class SpiderController {
             try {
                bfr.close();
             } catch (IOException e) {
-                log.error("[{}，关渚文件失败，原因为：{}]",SpiderController.class.getName(),e.getMessage());
+                log.error("[{}，关闭文件失败，原因为：{}]",SpiderController.class.getName(),e.getMessage());
             }
         }
         return resultMap;
 
+    }
+
+
+    @RequestMapping(value="/spiderData",method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Object> spiderData(){
+
+        Map<String,Object> resultMap = new HashMap<>();
+        resultMap.put("status",false);
+        try{
+            boolean result = spiderService.spiderTaobaoData();
+            resultMap.put("status",result);
+        }
+        catch (Exception e){
+            resultMap.put("status",false);
+            log.error("[{}，对比淘宝数据失败，原因为：{}]",SpiderController.class.getName(),e.getMessage());
+        }
+
+        return resultMap;
     }
 
 }

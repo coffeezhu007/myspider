@@ -38,6 +38,21 @@
                     if(res.status){
                         alert("上传拼多多商品数据成功，后台程序进行对比淘宝商品！");
                         // 再次发起另一个ajax进行商口对比
+                        $.ajax({
+                            url: 'spiderData',
+                            type: 'get',
+                            cache: false,
+                            dataType:'json',
+                        }).done(function(res) {
+                            if(res.status){
+                                alert("对比淘宝数据成功，请查看数据库表！！！");
+                            }
+                            else{
+                                alert("对比淘宝数据失败，源数据有可能没有淘宝结果！！！");
+                            }
+                        }).fail(function(res) {
+                            alert("后台程序异常!");
+                        });
                     }
                     else{
                         alert("上传拼多多商品数据失败!");

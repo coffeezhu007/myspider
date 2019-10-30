@@ -11,5 +11,4 @@ public interface PinduoduoProductService {
 
     void savePinduoduoProductsUrl(String pddProductUrl);
 
-
 }
