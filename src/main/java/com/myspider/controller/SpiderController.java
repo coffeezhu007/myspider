@@ -1,9 +1,11 @@
 package com.myspider.controller;
 
+import com.myspider.service.PinduoduoProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +17,8 @@ import java.util.Map;
 @Controller
 public class SpiderController {
 
+    @Autowired
+    private PinduoduoProductService pinduoduoProductService;
 
     @Value("${spring.servlet.multipart.location}")
     private String upladFileDir;
@@ -30,7 +34,7 @@ public class SpiderController {
     public Map<String,Object> upladPddfile(@RequestParam("pdd_product_file") MultipartFile pddProductFile){
 
         Map<String,Object> resultMap = new HashMap<>();
-
+        resultMap.put("status",false);
         String fileName = pddProductFile.getOriginalFilename();
 
         BufferedReader bfr = null;
@@ -49,8 +53,14 @@ public class SpiderController {
             bfr =  new BufferedReader(new  FileReader(dest));
             String url = "";
             while (( url=bfr.readLine())!=null) {
-                System.out.println(url);
+                try{
+                    pinduoduoProductService.savePinduoduoProductsUrl(url);
+                }
+                catch (Exception e){
+                    log.error("[{}，插入拼多多商品数据失败，原因为：{}]",SpiderController.class.getName(),e.getMessage());
+                }
             }
+            resultMap.put("status",true);
         }
         catch (Exception e){
             log.error("[{}，上传文件失败，原因为：{}]",SpiderController.class.getName(),e.getMessage());
