@@ -146,6 +146,16 @@ public class SpiderServiceImpl implements SpiderService {
                 if(taobaoProductInfoDataList.size()==0 ){
                     // 未采到数据更新拼多多表，并记录状态是未对比到淘宝数据
                     pddProductDao.updatePinduoduoProductUrlStatus(StatusEnum.MO_RESULT.getValue(),pddUrl.getProductUrl());
+
+                    TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
+                            pddProductUrl(pddUrl.getProductUrl()).tapBaoProductUrl(null).spiderDate(new Date())
+                            .build();
+                    try{
+                        taobaoProductDao.save(taobaoProductsUrlEntity);
+                    }
+                    catch (Exception e){
+                        throw e;
+                    }
                 }else{
                     taobaoProductInfoDataList.sort((TaobaoProductInfoFeignData data1,TaobaoProductInfoFeignData data2)->
                             Double.valueOf(data1.getPrice()).compareTo(Double.valueOf(data2.getPrice())   )  );
