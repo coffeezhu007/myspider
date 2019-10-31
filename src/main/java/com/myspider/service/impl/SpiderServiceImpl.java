@@ -88,7 +88,7 @@ public class SpiderServiceImpl implements SpiderService {
                         }
                     }
                 }
-                // 第三步，通过第三方平台的API（拼多多商品详细API）得到拼多多该产品的所有信息 start
+                // 第三步，通过第三方平台的API（拼多多商品详细API）得到拼多多该产品的所有信息 end
 
                 //第四步，通过第三方平台的API(淘宝商品) start
 
