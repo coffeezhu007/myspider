@@ -16,5 +16,5 @@ public interface PinduoduoProductDao extends JpaRepository<PinduoduoProductsUrlE
     int updatePinduoduoProductUrlStatus(int status,String productUrl);
 
 
-    List<PinduoduoProductsUrlEntity> findByStatus(int status);
+    List<PinduoduoProductsUrlEntity> findByStatusOrderByIdAsc(int status);
 }
