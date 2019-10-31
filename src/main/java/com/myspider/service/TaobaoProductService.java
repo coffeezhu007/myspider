@@ -6,7 +6,6 @@ import com.myspider.dto.response.TaobaoProductInfoFeignResponse;
 
 public interface TaobaoProductService {
 
-     TaobaoProductInfoFeignResponse getTaobaoProduct(String keyword, String startPrice, String endPrice, Integer page,String order);
+     TaobaoProductInfoFeignResponse getTaobaoProduct(String keyword, String startPrice, String endPrice, Integer page,Integer pageSize,String order);
 
-     TaobaoProductDetailFeignResponse findProductDetail(String itemId);
 }

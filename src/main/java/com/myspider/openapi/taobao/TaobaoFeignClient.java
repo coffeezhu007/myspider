@@ -13,20 +13,17 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
  *@Description:调用淘宝第三方接口的FeignClient
  *@Date:15:16 15:16
  */
-@FeignClient(name = "taobaoFeignClient", url = "${endpoint.99api.url}", configuration =
+@FeignClient(name = "taobaoFeignClient", url = "${endpoint.wanbangapi.url}", configuration =
         TaobaoFeignConfig.class)
 @RequestMapping(consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
 public interface TaobaoFeignClient {
 
 
-    @GetMapping("/app/taobao/search")
-    //@GetMapping("/taobao/search")
-    TaobaoProductInfoFeignResponse findProductInfo(@RequestParam("apikey") String apiKey, @RequestParam("keyword") String keyword,
-                                                   @RequestParam("startPrice") String startPrice,@RequestParam("endPrice") String endPrice,
-                                                   @RequestParam("page") Integer page,@RequestParam("order") String order);
+    @GetMapping("/taobao/api_call.php?api_name=item_search")
+    TaobaoProductInfoFeignResponse findProductInfo(@RequestParam("key") String apiKey, @RequestParam("secret") String secret,
+                                                   @RequestParam("q") String keyword, @RequestParam("startPrice") String startPrice,
+                                                   @RequestParam("endPrice") String endPrice, @RequestParam("page") Integer page,
+                                                   @RequestParam("page_size") Integer pageSize,@RequestParam("sort") String sort);
 
-
-    @GetMapping("/taobao/detail")
-    TaobaoProductDetailFeignResponse findProductDetail(@RequestParam("apikey") String apiKey, @RequestParam("itemid") String itemId);
 
 }

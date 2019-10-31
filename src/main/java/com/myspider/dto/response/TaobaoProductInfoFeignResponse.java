@@ -13,15 +13,11 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class TaobaoProductInfoFeignResponse implements Serializable {
 
-    private String dataType;   // 数据类型
-    private Boolean hasNext;  // 是否有下一页
-    private String appCode;   // 数据类型
-    private Integer pageToken;   // 翻页值
-    private String  version;   // 页数
-    private String retcode;   // 返回状态码
 
-    private List<TaobaoProductInfoFeignData> data;
+    @JsonProperty("items")
+    private TaobaoProductInfoFeignData data;
 
 }

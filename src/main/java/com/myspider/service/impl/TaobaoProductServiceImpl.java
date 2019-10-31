@@ -15,22 +15,21 @@ import java.util.HashMap;
 @Slf4j
 public class TaobaoProductServiceImpl implements TaobaoProductService {
 
-    @Value("${myspider.99api.user.apikey}")
+    @Value("${myspider.wanbangapi.user.appkey}")
     private String apiKey;
+
+    @Value("${myspider.wanbangapi.user.secret}")
+    private String secret;
+
 
     @Autowired
     private TaobaoFeignClient taobaoFeignClient;
 
     @Override
-    public TaobaoProductInfoFeignResponse getTaobaoProduct(String keyword, String startPrice, String endPrice, Integer page,String order) {
-        TaobaoProductInfoFeignResponse response  = taobaoFeignClient.findProductInfo(apiKey,keyword,startPrice,endPrice,page,order);
+    public TaobaoProductInfoFeignResponse getTaobaoProduct(String keyword, String startPrice, String endPrice, Integer page,Integer pageSize,String sort) {
+        TaobaoProductInfoFeignResponse response  = taobaoFeignClient.findProductInfo(apiKey,secret,keyword,startPrice,endPrice,page,pageSize,sort);
         return response;
     }
 
-    @Override
-    public TaobaoProductDetailFeignResponse findProductDetail(String itemId) {
-        TaobaoProductDetailFeignResponse response = taobaoFeignClient.findProductDetail(apiKey,itemId);
-        return response;
-    }
 
 }

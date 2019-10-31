@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.Date;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,5 +30,6 @@ public class PinduoduoProductsUrlEntity {
 
     @Column(name="status",length = 1)
     private Integer status ;  // 0:代表示未采集 1:代表已采集， 2:采集未得到结果
+
 
 }

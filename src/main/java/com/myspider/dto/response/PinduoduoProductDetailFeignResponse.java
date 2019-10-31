@@ -14,6 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class PinduoduoProductDetailFeignResponse implements Serializable {
 
+
     private String dataType;   // 数据类型
     private Boolean hasNext;  // 是否有下一页
     private String appCode;   // 数据类型

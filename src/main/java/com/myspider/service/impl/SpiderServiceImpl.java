@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.transaction.RollbackException;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,8 +44,8 @@ public class SpiderServiceImpl implements SpiderService {
 
     @Value("${taobao.search.product.min.page.number:1}")
     private Integer minPageNumber;
-    @Value("${taobao.search.product.max.page.number:20}")
-    private Integer maxPageNumber;
+    @Value("${taobao.search.product.max.page.page_size:40}")
+    private Integer pageSize;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -91,53 +92,38 @@ public class SpiderServiceImpl implements SpiderService {
 
                 //第四步，通过第三方平台的API(淘宝商品) start
 
-                List<TaobaoProductInfoFeignData> taobaoProductInfoDataList = new ArrayList<>();
+                List<TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem> taobaoProductInfoDataList = new ArrayList<>();
 
-                for(int i=minPageNumber;i<=maxPageNumber;i++){
+                //  第一层限定，找到的淘宝商品是小于等于我拼多多的商品的价格的
+                TaobaoProductInfoFeignResponse taobaoProductInfoResponse =  null;
 
-                    //  第一层限定，找到的淘宝商品是小于等于我拼多多的商品的价格的
-                    TaobaoProductInfoFeignResponse taobaoProductInfoResponse =  null;
+                try{
+                    taobaoProductInfoResponse = taobaoProductService.getTaobaoProduct(goodsName,"1",goodsPrice,minPageNumber,pageSize,"sale");
+                }
+                catch (Exception e){
+                    log.error("taobaoProductInfoResponse.getData()，有可能无数据，这样，data=‘搜索成功，但无结果’ ");
+                }
 
-                    try{
-                        taobaoProductInfoResponse = taobaoProductService.getTaobaoProduct(goodsName,"1",goodsPrice,i,"sale-desc");
-                    }
-                    catch (Exception e){
-                        log.error("taobaoProductInfoResponse.getData()，有可能无数据，这样，data=‘搜索成功，但无结果’ ");
-                        log.error("翻到了第"+i+"页，已经无数据，这样，taobaoProductInfoResponse.data=‘搜索成功，但无结果’ ");
-                        //跳出循环
-                        break;
-                    }
+                List<TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem> taobaoProductInfoFeignDataList = null;
 
-                    List<TaobaoProductInfoFeignData> taobaoProductInfoFeignDataList = null;
+                if(null != taobaoProductInfoResponse && null != taobaoProductInfoResponse.getData()){
 
-                    if(null != taobaoProductInfoResponse && null != taobaoProductInfoResponse.getData()){
+                    taobaoProductInfoFeignDataList = taobaoProductInfoResponse.getData().getItemData();
 
-                        taobaoProductInfoFeignDataList = taobaoProductInfoResponse.getData();
+                    if(null != taobaoProductInfoFeignDataList && taobaoProductInfoFeignDataList.size()>0){
 
-                        if(null != taobaoProductInfoFeignDataList && taobaoProductInfoFeignDataList.size()>0){
+                        taobaoProductInfoFeignDataList.forEach(taobaoProductInfoFeignData ->{
 
-                            taobaoProductInfoFeignDataList.forEach(taobaoProductInfoFeignData ->{
+                            // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 start
+                            BigDecimal delivery = taobaoProductInfoFeignData.getPostFee();
 
-                                // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 start
-                                String taobaoGoodsId = taobaoProductInfoFeignData.getId();
+                            if(null ==delivery || BigDecimal.valueOf(0.00d).equals(delivery)  && taobaoProductInfoFeignData.getSales()>0  ){
+                                taobaoProductInfoDataList.add(taobaoProductInfoFeignData);
+                            }
+                            // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 end
 
-                                TaobaoProductDetailFeignResponse taobaoProductDetailFeignResponse = taobaoProductService.findProductDetail(taobaoGoodsId);
-                                if(null != taobaoProductDetailFeignResponse.getData() &&  null != taobaoProductDetailFeignResponse.getData().getItem()){
+                        });
 
-                                    String delivery = taobaoProductDetailFeignResponse.getData().getItem().getDelivery();
-
-                                    if("免运费".equals(delivery) || "0.00".equals(delivery) && !"0人付款".equals(taobaoProductInfoFeignData.getSales()) ){
-                                        taobaoProductInfoDataList.add(taobaoProductInfoFeignData);
-                                    }
-                                }
-                                // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 end
-
-                            });
-
-                        }
-                        /* if(!taobaoProductInfoResponse.getHasNext()){
-                            break;
-                        }*/
                     }
                 }
                 //第四步，通过第三方平台的API(淘宝商品) end
@@ -157,17 +143,17 @@ public class SpiderServiceImpl implements SpiderService {
                         throw e;
                     }
                 }else{
-                    taobaoProductInfoDataList.sort((TaobaoProductInfoFeignData data1,TaobaoProductInfoFeignData data2)->
-                            Double.valueOf(data1.getPrice()).compareTo(Double.valueOf(data2.getPrice())   )  );
+                    taobaoProductInfoDataList.sort((TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem data1,TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem data2)->
+                            data1.getPromotionPrice().compareTo(data2.getPrice())  );
 
-                    TaobaoProductInfoFeignData lowestTaobaoProductData = taobaoProductInfoDataList.get(0);
+                    TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem lowestTaobaoProductDataItem = taobaoProductInfoDataList.get(0);
                     // 第六步 把最优质的淘宝url存到 t_taobao_goods_url表中
                     String taobaoUrl = "";
-                    if(lowestTaobaoProductData.getUrl().startsWith("http://")  || lowestTaobaoProductData.getUrl().startsWith("https://") ){
-                        taobaoUrl = lowestTaobaoProductData.getUrl();
+                    if(lowestTaobaoProductDataItem.getDetailUrl().startsWith("http://")  || lowestTaobaoProductDataItem.getDetailUrl().startsWith("https://") ){
+                        taobaoUrl = lowestTaobaoProductDataItem.getDetailUrl();
                     }
                     else{
-                        taobaoUrl = "https:"+lowestTaobaoProductData.getUrl();
+                        taobaoUrl = "https:"+lowestTaobaoProductDataItem.getDetailUrl();
                     }
                     log.info("最后得到的最优质的淘宝地址为======"+taobaoUrl);
 
