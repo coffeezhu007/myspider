@@ -53,7 +53,7 @@ public class SpiderServiceImpl implements SpiderService {
 
         Boolean result = Boolean.FALSE;
 
-        List<PinduoduoProductsUrlEntity> pddUrsList = pddProductDao.findByStatus(StatusEnum.UNSPIDER.getValue());
+        List<PinduoduoProductsUrlEntity> pddUrsList = pddProductDao.findByStatusOrderByIdAsc(StatusEnum.UNSPIDER.getValue());
 
         if(null != pddUrsList && pddUrsList.size() >0){
 
@@ -102,6 +102,18 @@ public class SpiderServiceImpl implements SpiderService {
                 }
                 catch (Exception e){
                     log.error("taobaoProductInfoResponse.getData()，有可能无数据，这样，data=‘搜索成功，但无结果’ ");
+                    try{
+                        TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
+                                pddProductUrl(pddUrl.getProductUrl()).tapBaoProductUrl(null).spiderDate(new Date())
+                                .build();
+
+                        taobaoProductDao.save(taobaoProductsUrlEntity);
+                    }
+                    catch (Exception e2){
+                        log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e2.getMessage());
+                        throw e2;
+                    }
+                    return;
                 }
 
                 List<TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem> taobaoProductInfoFeignDataList = null;
@@ -114,13 +126,13 @@ public class SpiderServiceImpl implements SpiderService {
 
                         taobaoProductInfoFeignDataList.forEach(taobaoProductInfoFeignData ->{
 
-                            // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 start
+                            // 得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 start
                             BigDecimal delivery = taobaoProductInfoFeignData.getPostFee();
 
                             if(null ==delivery || BigDecimal.valueOf(0.00d).equals(delivery)  && taobaoProductInfoFeignData.getSales()>0  ){
                                 taobaoProductInfoDataList.add(taobaoProductInfoFeignData);
                             }
-                            // 再调用第三方的API(淘宝商品详情)可以得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 end
+                            // 得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 end
 
                         });
 
@@ -140,6 +152,7 @@ public class SpiderServiceImpl implements SpiderService {
                         taobaoProductDao.save(taobaoProductsUrlEntity);
                     }
                     catch (Exception e){
+                        log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
                         throw e;
                     }
                 }else{
@@ -160,11 +173,21 @@ public class SpiderServiceImpl implements SpiderService {
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                             pddProductUrl(pddUrl.getProductUrl()).tapBaoProductUrl(taobaoUrl).spiderDate(new Date())
                             .build();
+
+
                     try{
                         pddProductDao.updatePinduoduoProductUrlStatus(StatusEnum.SUCCESS.getValue(),pddUrl.getProductUrl());
+                    }
+                    catch (Exception e){
+                        log.error("更新 pdd_goods_url 表中数据失败,原因是:[{}]",e.getMessage());
+                        throw e;
+                    }
+
+                    try{
                         taobaoProductDao.save(taobaoProductsUrlEntity);
                     }
                     catch (Exception e){
+                        log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
                         throw e;
                     }
                 }
