@@ -96,30 +96,39 @@ public class SpiderServiceImpl implements SpiderService {
 
                 try{
                     taobaoProductInfoResponse = taobaoProductService.getTaobaoProduct(goodsName,"1",goodsPrice,minPageNumber,pageSize,"sale");
+
+                    if(null ==taobaoProductInfoResponse.getData().getItemData() || taobaoProductInfoResponse.getData().getItemData().size() ==0 ){
+
+                        // 如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start
+                        try{
+                            taobaoProductInfoResponse = taobaoProductService.getTaobaoProductInfoByImgUrl(thumbUrl);
+
+                            if(null != taobaoProductInfoResponse.getData().getError() &&  !"".equals(taobaoProductInfoResponse.getData().getError())  ){
+
+                                log.error("用图片搜商品也没找到数据,这样，data=‘搜索成功，但无结果’ ");
+
+                                TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
+                                        pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
+                                        .status(StatusEnum.NO_TAOBAO_PRODUCT.getValue()).thumbUrl(thumbUrl).build();
+                                try{
+                                    taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
+                                }
+                                catch (Exception e){
+                                    log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
+                                    throw e;
+                                }
+                                return;
+                            }
+
+                        }
+                        catch(Exception e){
+                            log.error("淘宝用拼多多图片搜索商品发生异常,原因是===[{}] ",e.getMessage());
+                        }
+                        // 如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 end
+                    }
                 }
                 catch (Exception e){
-                    log.error("taobaoProductInfoResponse.getData()，有可能无数据，这样，data=‘搜索成功，但无结果’ ");
-
-                    // 如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start
-                    try{
-                        taobaoProductInfoResponse = taobaoProductService.getTaobaoProductInfoByImgUrl(thumbUrl);
-                    }
-                    catch(Exception e2){
-                        log.error("taobaoProductInfoResponse.getData()，用图片搜商品也没找到数据,这样，data=‘搜索成功，但无结果’ ");
-
-                        TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
-                                pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
-                                .status(StatusEnum.NO_TAOBAO_PRODUCT.getValue()).thumbUrl(thumbUrl).build();
-                        try{
-                            taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
-                        }
-                        catch (Exception e3){
-                            log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e3.getMessage());
-                            throw e3;
-                        }
-                        return;
-                    }
-                    // 如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 end
+                    log.error("淘宝用商品名字搜索商品发生异常,原因是===[{}] ",e.getMessage());
                 }
 
                 List<TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem> taobaoProductInfoFeignDataList = null;
