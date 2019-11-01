@@ -2,7 +2,8 @@ package com.myspider.common.enums;
 
 public enum StatusEnum {
 
-    UNSPIDER("unspider", 0), SUCCESS("spider_success", 1),  MO_RESULT("no_result", 2);
+    UNSPIDER("unspider", 0), SUCCESS("spider_success", 1),
+    NO_TAOBAO_PRODUCT("no_result", 2),TAOBAO_PRODUCT_CHECK_FAILED("check_failed", 3);
 
     private StatusEnum(String code, int value) {
         this.code = code;

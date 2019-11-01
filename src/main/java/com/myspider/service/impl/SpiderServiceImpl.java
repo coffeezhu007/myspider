@@ -2,25 +2,18 @@ package com.myspider.service.impl;
 
 import com.myspider.common.enums.StatusEnum;
 import com.myspider.dto.response.PinduoduoProductDetailFeignResponse;
-import com.myspider.dto.response.TaobaoProductDetailFeignResponse;
 import com.myspider.dto.response.TaobaoProductInfoFeignData;
 import com.myspider.dto.response.TaobaoProductInfoFeignResponse;
-import com.myspider.entity.PinduoduoProductsUrlEntity;
 import com.myspider.entity.TaobaoProductsUrlEntity;
-import com.myspider.repository.PinduoduoProductDao;
 import com.myspider.repository.TaobaoProductDao;
 import com.myspider.service.PinduoduoProductService;
 import com.myspider.service.SpiderService;
 import com.myspider.service.TaobaoProductService;
-import com.myspider.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.transaction.RollbackException;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,9 +30,6 @@ public class SpiderServiceImpl implements SpiderService {
     private PinduoduoProductService pinduoduoProductService;
 
     @Autowired
-    private PinduoduoProductDao pddProductDao;
-
-    @Autowired
     private TaobaoProductDao taobaoProductDao;
 
     @Value("${taobao.search.product.min.page.number:1}")
@@ -53,16 +43,16 @@ public class SpiderServiceImpl implements SpiderService {
 
         Boolean result = Boolean.FALSE;
 
-        List<PinduoduoProductsUrlEntity> pddUrsList = pddProductDao.findByStatusOrderByIdAsc(StatusEnum.UNSPIDER.getValue());
+        List<TaobaoProductsUrlEntity> pddUrsList = taobaoProductDao.findByStatusOrderByIdAsc(StatusEnum.UNSPIDER.getValue());
 
         if(null != pddUrsList && pddUrsList.size() >0){
 
             pddUrsList.forEach(pddUrl ->{
-                log.info("拼多多的商品url====={}",pddUrl.getProductUrl());
+                log.info("拼多多的商品url====={}",pddUrl.getPddProductUrl());
 
                 // 第二步，把其中最后一段参数拿出来
                 String goodsId = "";
-                String [] urlSplit = pddUrl.getProductUrl().split("\\?");
+                String [] urlSplit = pddUrl.getPddProductUrl().split("\\?");
                 if(null != urlSplit && urlSplit.length >1){
                     goodsId = urlSplit[1];
                     if(null != goodsId && goodsId.split("=").length >1 ){
@@ -116,10 +106,11 @@ public class SpiderServiceImpl implements SpiderService {
                     }
                     catch(Exception e2){
                         log.error("taobaoProductInfoResponse.getData()，用图片搜商品也没找到数据,这样，data=‘搜索成功，但无结果’ ");
+
+                        TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
+                                pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
+                                .status(StatusEnum.NO_TAOBAO_PRODUCT.getValue()).thumbUrl(thumbUrl).build();
                         try{
-                            TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
-                                    pddProductUrl(pddUrl.getProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
-                                    .status(StatusEnum.MO_RESULT.getValue()).thumbUrl(thumbUrl).build();
                             taobaoProductDao.save(taobaoProductsUrlEntity);
                         }
                         catch (Exception e3){
@@ -158,11 +149,10 @@ public class SpiderServiceImpl implements SpiderService {
                 //第五步 最后按这个要求对比，从有销量的商品中，再找一个价格最低的那个淘宝网址就是想要的 start
                 if(taobaoProductInfoDataList.size()==0 ){
                     // 未采到数据更新拼多多表，并记录状态是未对比到淘宝数据
-                    pddProductDao.updatePinduoduoProductUrlStatus(StatusEnum.MO_RESULT.getValue(),pddUrl.getProductUrl());
 
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
-                            pddProductUrl(pddUrl.getProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
-                            .status(StatusEnum.MO_RESULT.getValue()).thumbUrl(thumbUrl).build();
+                            pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
+                            .status(StatusEnum.TAOBAO_PRODUCT_CHECK_FAILED.getValue()).thumbUrl(thumbUrl).build();
                     try{
                         taobaoProductDao.save(taobaoProductsUrlEntity);
                     }
@@ -183,10 +173,10 @@ public class SpiderServiceImpl implements SpiderService {
                     log.info("最后得到的最优质的淘宝地址为======"+taobaoUrl);
 
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
-                            pddProductUrl(pddUrl.getProductUrl()).taoBaoProductUrl(taobaoUrl).spiderDate(new Date())
+                            pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(taobaoUrl).spiderDate(new Date())
                             .status(StatusEnum.SUCCESS.getValue()).thumbUrl(thumbUrl).build();
                     try{
-                        pddProductDao.updatePinduoduoProductUrlStatus(StatusEnum.SUCCESS.getValue(),pddUrl.getProductUrl());
+                        taobaoProductDao.save(taobaoProductsUrlEntity);
                     }
                     catch (Exception e){
                         log.error("更新 pdd_goods_url 表中数据失败,原因是:[{}]",e.getMessage());

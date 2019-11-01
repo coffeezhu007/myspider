@@ -2,6 +2,7 @@ package com.myspider.controller;
 
 import com.myspider.service.PinduoduoProductService;
 import com.myspider.service.SpiderService;
+import com.myspider.service.TaobaoProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ import java.util.Map;
 public class SpiderController {
 
     @Autowired
-    private PinduoduoProductService pinduoduoProductService;
+    private TaobaoProductService taobaoProductService;
 
     @Autowired
     private SpiderService spiderService;
@@ -58,7 +59,7 @@ public class SpiderController {
             String url = "";
             while (( url=bfr.readLine())!=null) {
                 try{
-                    pinduoduoProductService.savePinduoduoProductsUrl(url);
+                    taobaoProductService.savePinduoduoUrlToDb(url);
                 }
                 catch (Exception e){
                     log.error("[{}，插入拼多多商品数据失败，原因为：{}]",SpiderController.class.getName(),e.getMessage());

@@ -31,8 +31,12 @@ public class TaobaoProductsUrlEntity {
     @Column(name="taobao_product_url")
     private String taoBaoProductUrl;
 
+    @Column(name="cdate")
+    private Date createDate ;
+
     @Column(name="spider_date")
     private Date spiderDate ;
+
 
     @Column(name="status",length = 1)
     private Integer status ;  // 预留暂时没有使用
