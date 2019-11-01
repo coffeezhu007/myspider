@@ -111,7 +111,7 @@ public class SpiderServiceImpl implements SpiderService {
                                 pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
                                 .status(StatusEnum.NO_TAOBAO_PRODUCT.getValue()).thumbUrl(thumbUrl).build();
                         try{
-                            taobaoProductDao.save(taobaoProductsUrlEntity);
+                            taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
                         }
                         catch (Exception e3){
                             log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e3.getMessage());
@@ -154,7 +154,7 @@ public class SpiderServiceImpl implements SpiderService {
                             pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
                             .status(StatusEnum.TAOBAO_PRODUCT_CHECK_FAILED.getValue()).thumbUrl(thumbUrl).build();
                     try{
-                        taobaoProductDao.save(taobaoProductsUrlEntity);
+                        taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
                     }
                     catch (Exception e){
                         log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
@@ -176,15 +176,7 @@ public class SpiderServiceImpl implements SpiderService {
                             pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(taobaoUrl).spiderDate(new Date())
                             .status(StatusEnum.SUCCESS.getValue()).thumbUrl(thumbUrl).build();
                     try{
-                        taobaoProductDao.save(taobaoProductsUrlEntity);
-                    }
-                    catch (Exception e){
-                        log.error("更新 pdd_goods_url 表中数据失败,原因是:[{}]",e.getMessage());
-                        throw e;
-                    }
-
-                    try{
-                        taobaoProductDao.save(taobaoProductsUrlEntity);
+                        taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
                     }
                     catch (Exception e){
                         log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
