@@ -66,24 +66,34 @@ public class SpiderServiceImpl implements SpiderService {
                 String goodsDes = "";
                 String goodsPrice = "";
                 String thumbUrl = "";
-                PinduoduoProductDetailFeignResponse response = pinduoduoProductService.findProductDetail(Long.valueOf(goodsId));
-                if("0000".equals(response.getRetcode())){
-                    if(null !=   response.getData()){
-                        if(null != response.getData().getItem()){
-                            goodsName =  response.getData().getItem().getGoodsName();
-                            log.info("拼多多的商品名称是======{}",goodsName);
-                            goodsDes =  response.getData().getItem().getGoodsDesc();
-                            log.info("拼多多的商品描述是======{}",goodsDes);
-                            goodsPrice =  response.getData().getItem().getMinGroupPrice();
-                            log.info("拼多多的商品的最低组合价格是======{}",goodsPrice);
 
-                            thumbUrl = response.getData().getItem().getThumbUrl();
-                            if(! thumbUrl.startsWith("http://")  &&  ! thumbUrl.startsWith("https://") ){
-                                thumbUrl =  "http:"+thumbUrl;
+                PinduoduoProductDetailFeignResponse response =  null;
+                try{
+                    response = pinduoduoProductService.findProductDetail(Long.valueOf(goodsId));
+
+                    if("0000".equals(response.getRetcode())){
+                        if(null !=   response.getData()){
+                            if(null != response.getData().getItem()){
+                                goodsName =  response.getData().getItem().getGoodsName();
+                                log.info("拼多多的商品名称是======{}",goodsName);
+                                goodsDes =  response.getData().getItem().getGoodsDesc();
+                                log.info("拼多多的商品描述是======{}",goodsDes);
+                                goodsPrice =  response.getData().getItem().getMinGroupPrice();
+                                log.info("拼多多的商品的最低组合价格是======{}",goodsPrice);
+
+                                thumbUrl = response.getData().getItem().getThumbUrl();
+                                if(! thumbUrl.startsWith("http://")  &&  ! thumbUrl.startsWith("https://") ){
+                                    thumbUrl =  "http:"+thumbUrl;
+                                }
+                                log.info("拼多多的商品的图片地址是======{}",thumbUrl);
                             }
-                            log.info("拼多多的商品的图片地址是======{}",thumbUrl);
                         }
                     }
+
+                }
+                catch (Exception e){
+                    log.error("拼多多通过商品ID搜索商品发生异常,原因是===[{}] ",e.getMessage());
+                    return;
                 }
                 // 第三步，通过第三方平台的API（拼多多商品详细API）得到拼多多该产品的所有信息 end
 
