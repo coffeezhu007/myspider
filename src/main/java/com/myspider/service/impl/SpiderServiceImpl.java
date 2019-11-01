@@ -150,6 +150,8 @@ public class SpiderServiceImpl implements SpiderService {
                 if(taobaoProductInfoDataList.size()==0 ){
                     // 未采到数据更新拼多多表，并记录状态是未对比到淘宝数据
 
+                    log.info("通过淘宝关键字接口和图片接口找到对应的淘宝商品，但是不满足老板的要求，都放弃了，拼多多的商品id=[{}],商品名称=[{}]",goodsId,goodsName);
+
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                             pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
                             .status(StatusEnum.TAOBAO_PRODUCT_CHECK_FAILED.getValue()).thumbUrl(thumbUrl).build();
