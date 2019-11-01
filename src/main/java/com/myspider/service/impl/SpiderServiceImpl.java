@@ -204,6 +204,12 @@ public class SpiderServiceImpl implements SpiderService {
                     }
                 }
                 //第五步 最后按这个要求对比，从有销量的商品中，再找一个价格最低的那个淘宝网址就是想要的 end
+
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             });
 
             result = Boolean.TRUE;
