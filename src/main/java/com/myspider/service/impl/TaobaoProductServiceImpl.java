@@ -31,5 +31,11 @@ public class TaobaoProductServiceImpl implements TaobaoProductService {
         return response;
     }
 
+    @Override
+    public TaobaoProductInfoFeignResponse getTaobaoProductInfoByImgUrl(String imgId) {
+        TaobaoProductInfoFeignResponse response = taobaoFeignClient.findProductInfoByImgUrl(apiKey,secret,imgId);
+        return response;
+    }
+
 
 }

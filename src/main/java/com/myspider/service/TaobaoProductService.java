@@ -8,4 +8,5 @@ public interface TaobaoProductService {
 
      TaobaoProductInfoFeignResponse getTaobaoProduct(String keyword, String startPrice, String endPrice, Integer page,Integer pageSize,String order);
 
+     TaobaoProductInfoFeignResponse getTaobaoProductInfoByImgUrl(String imgId);
 }

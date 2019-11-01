@@ -25,6 +25,9 @@ public class TaobaoProductsUrlEntity {
     @Column(name="pdd_product_url")
     private String pddProductUrl;
 
+    @Column(name="pdd_product_pic_url")
+    private String thumbUrl ;  // 图片url
+
     @Column(name="taobao_product_url")
     private String tapBaoProductUrl;
 

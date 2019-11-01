@@ -26,4 +26,8 @@ public interface TaobaoFeignClient {
                                                    @RequestParam("page_size") Integer pageSize,@RequestParam("sort") String sort);
 
 
+    @GetMapping("/taobao/api_call.php?api_name=item_search_img")
+    TaobaoProductInfoFeignResponse findProductInfoByImgUrl(@RequestParam("key") String apiKey, @RequestParam("secret") String secret,
+                                                   @RequestParam("imgid") String imgId);
+
 }

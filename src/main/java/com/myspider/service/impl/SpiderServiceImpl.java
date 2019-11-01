@@ -75,6 +75,7 @@ public class SpiderServiceImpl implements SpiderService {
                 String goodsName = "";
                 String goodsDes = "";
                 String goodsPrice = "";
+                String thumbUrl = "";
                 PinduoduoProductDetailFeignResponse response = pinduoduoProductService.findProductDetail(Long.valueOf(goodsId));
                 if("0000".equals(response.getRetcode())){
                     if(null !=   response.getData()){
@@ -85,6 +86,12 @@ public class SpiderServiceImpl implements SpiderService {
                             log.info("拼多多的商品描述是======{}",goodsDes);
                             goodsPrice =  response.getData().getItem().getMinGroupPrice();
                             log.info("拼多多的商品的最低组合价格是======{}",goodsPrice);
+
+                            thumbUrl = response.getData().getItem().getThumbUrl();
+                            if(! thumbUrl.startsWith("http://")  &&  ! thumbUrl.startsWith("https://") ){
+                                thumbUrl =  "http:"+thumbUrl;
+                            }
+                            log.info("拼多多的商品的图片地址是======{}",thumbUrl);
                         }
                     }
                 }
@@ -103,23 +110,19 @@ public class SpiderServiceImpl implements SpiderService {
                 catch (Exception e){
                     log.error("taobaoProductInfoResponse.getData()，有可能无数据，这样，data=‘搜索成功，但无结果’ ");
                     try{
+                        // 未来此处会加代码，如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start
+                        taobaoProductInfoResponse = taobaoProductService.getTaobaoProductInfoByImgUrl(thumbUrl);
+                        // 未来此处会加代码，如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start
+
                         TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                                 pddProductUrl(pddUrl.getProductUrl()).tapBaoProductUrl(null).spiderDate(new Date())
-                                .build();
-
-
-                        // 未来此处会加代码，如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start TODO
-
-
-                        // 未来此处会加代码，如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start TODO
-
+                                .thumbUrl(thumbUrl).build();
                         taobaoProductDao.save(taobaoProductsUrlEntity);
                     }
                     catch (Exception e2){
                         log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e2.getMessage());
                         throw e2;
                     }
-                    return;
                 }
 
                 List<TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem> taobaoProductInfoFeignDataList = null;
@@ -153,7 +156,7 @@ public class SpiderServiceImpl implements SpiderService {
 
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                             pddProductUrl(pddUrl.getProductUrl()).tapBaoProductUrl(null).spiderDate(new Date())
-                            .build();
+                            .thumbUrl(thumbUrl).build();
                     try{
                         taobaoProductDao.save(taobaoProductsUrlEntity);
                     }
@@ -168,18 +171,14 @@ public class SpiderServiceImpl implements SpiderService {
                     TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem lowestTaobaoProductDataItem = taobaoProductInfoDataList.get(0);
                     // 第六步 把最优质的淘宝url存到 t_taobao_goods_url表中
                     String taobaoUrl = "";
-                    if(lowestTaobaoProductDataItem.getDetailUrl().startsWith("http://")  || lowestTaobaoProductDataItem.getDetailUrl().startsWith("https://") ){
-                        taobaoUrl = lowestTaobaoProductDataItem.getDetailUrl();
-                    }
-                    else{
-                        taobaoUrl = "https:"+lowestTaobaoProductDataItem.getDetailUrl();
+                    if(! lowestTaobaoProductDataItem.getDetailUrl().startsWith("http://")  && ! lowestTaobaoProductDataItem.getDetailUrl().startsWith("https://") ){
+                        taobaoUrl =  "http:"+lowestTaobaoProductDataItem.getDetailUrl();
                     }
                     log.info("最后得到的最优质的淘宝地址为======"+taobaoUrl);
 
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
-                            pddProductUrl(pddUrl.getProductUrl()).tapBaoProductUrl(taobaoUrl).spiderDate(new Date())
-                            .build();
-
+                            pddProductUrl(pddUrl.getProductUrl()).tapBaoProductUrl(null).spiderDate(new Date())
+                            .thumbUrl(thumbUrl).build();
 
                     try{
                         pddProductDao.updatePinduoduoProductUrlStatus(StatusEnum.SUCCESS.getValue(),pddUrl.getProductUrl());

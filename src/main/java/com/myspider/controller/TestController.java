@@ -14,10 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 @RestController
 @RequestMapping("test")
 @Slf4j
@@ -31,16 +27,25 @@ public class TestController {
 
 
     @GetMapping("test1")
-    public PinduoduoProductDetailFeignResponse test2(){
+    public PinduoduoProductDetailFeignResponse test1(){
         PinduoduoProductDetailFeignResponse response = pinduoduoProductService.findProductDetail(48495222275l);
         return response;
     }
 
 
     @GetMapping("test2")
-    public TaobaoProductInfoFeignResponse test(){
+    public TaobaoProductInfoFeignResponse test2(){
         TaobaoProductInfoFeignResponse response = taobaoProductService.getTaobaoProduct("手表","1","1000",1,40,"sale");
         return response;
     }
+
+
+    @GetMapping("test3")
+    public TaobaoProductInfoFeignResponse test3(){
+        TaobaoProductInfoFeignResponse response = taobaoProductService.getTaobaoProductInfoByImgUrl("http://t00img.yangkeduo.com/goods/images/images/2019-09-28/80aed74d09c28ff26fbc9d8e5be094ee.jpeg");
+        return response;
+    }
+
+
 
 }

@@ -31,5 +31,4 @@ public class PinduoduoProductsUrlEntity {
     @Column(name="status",length = 1)
     private Integer status ;  // 0:代表示未采集 1:代表已采集， 2:采集未得到结果
 
-
 }
