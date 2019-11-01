@@ -107,6 +107,12 @@ public class SpiderServiceImpl implements SpiderService {
                                 pddProductUrl(pddUrl.getProductUrl()).tapBaoProductUrl(null).spiderDate(new Date())
                                 .build();
 
+
+                        // 未来此处会加代码，如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start TODO
+
+
+                        // 未来此处会加代码，如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start TODO
+
                         taobaoProductDao.save(taobaoProductsUrlEntity);
                     }
                     catch (Exception e2){
