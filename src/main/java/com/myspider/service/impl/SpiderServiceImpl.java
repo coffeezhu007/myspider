@@ -133,7 +133,7 @@ public class SpiderServiceImpl implements SpiderService {
 
                 List<TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem> taobaoProductInfoFeignDataList = null;
 
-                if(null != taobaoProductInfoResponse.getData()
+                if(null != taobaoProductInfoResponse && null != taobaoProductInfoResponse.getData()
                         && null != taobaoProductInfoResponse.getData().getItemData()
                         && taobaoProductInfoResponse.getData().getItemData().size() >0 ){
 
