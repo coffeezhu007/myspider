@@ -141,18 +141,16 @@ public class SpiderServiceImpl implements SpiderService {
 
                     if(null != taobaoProductInfoFeignDataList && taobaoProductInfoFeignDataList.size()>0){
 
-                        taobaoProductInfoFeignDataList.forEach(taobaoProductInfoFeignData ->{
-
-                            // 得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 start
+                        for(TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem taobaoProductInfoFeignData: taobaoProductInfoFeignDataList ){
+                            // 得到该商品是不是包邮，如果包邮的以及有销量的,并且价格小于等于拼多多的，扔到taobaoProductInfoDataList 集合里面 start
                             BigDecimal delivery = taobaoProductInfoFeignData.getPostFee();
 
-                            if(null ==delivery || BigDecimal.valueOf(0.00d).equals(delivery)  && taobaoProductInfoFeignData.getSales()>0  ){
+                            if(null ==delivery || BigDecimal.valueOf(0.00d).equals(delivery)  && taobaoProductInfoFeignData.getSales()>0
+                                    &&  taobaoProductInfoFeignData.getPrice().compareTo( new BigDecimal(goodsPrice)) <=0 ){
                                 taobaoProductInfoDataList.add(taobaoProductInfoFeignData);
                             }
-                            // 得到该商品是不是包邮，如果包邮的以及有销量的，扔到taobaoProductInfoDataList 集合里面 end
-
-                        });
-
+                            // 得到该商品是不是包邮，如果包邮的以及有销量的,并且价格小于等于拼多多的扔到taobaoProductInfoDataList 集合里面 end
+                        }
                     }
                 }
                 //第四步，通过第三方平台的API(淘宝商品) end
@@ -202,4 +200,5 @@ public class SpiderServiceImpl implements SpiderService {
         }
         return result;
     }
+
 }
