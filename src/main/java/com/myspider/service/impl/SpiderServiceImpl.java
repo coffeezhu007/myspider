@@ -133,7 +133,9 @@ public class SpiderServiceImpl implements SpiderService {
 
                 List<TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem> taobaoProductInfoFeignDataList = null;
 
-                if(null != taobaoProductInfoResponse && null != taobaoProductInfoResponse.getData()){
+                if(null != taobaoProductInfoResponse.getData()
+                        && null != taobaoProductInfoResponse.getData().getItemData()
+                        && taobaoProductInfoResponse.getData().getItemData().size() >0 ){
 
                     taobaoProductInfoFeignDataList = taobaoProductInfoResponse.getData().getItemData();
 
@@ -158,7 +160,6 @@ public class SpiderServiceImpl implements SpiderService {
                 //第五步 最后按这个要求对比，从有销量的商品中，再找一个价格最低的那个淘宝网址就是想要的 start
                 if(taobaoProductInfoDataList.size()==0 ){
                     // 未采到数据更新拼多多表，并记录状态是未对比到淘宝数据
-
                     log.info("通过淘宝关键字接口和图片接口找到对应的淘宝商品，但是不满足老板的要求，都放弃了，拼多多的商品id=[{}],商品名称=[{}]",goodsId,goodsName);
 
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
