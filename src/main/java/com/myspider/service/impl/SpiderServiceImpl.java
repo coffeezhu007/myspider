@@ -109,11 +109,17 @@ public class SpiderServiceImpl implements SpiderService {
                 }
                 catch (Exception e){
                     log.error("taobaoProductInfoResponse.getData()，有可能无数据，这样，data=‘搜索成功，但无结果’ ");
-                    try{
-                        // 未来此处会加代码，如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start
-                        taobaoProductInfoResponse = taobaoProductService.getTaobaoProductInfoByImgUrl(thumbUrl);
-                        // 未来此处会加代码，如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start
 
+                    // 如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start
+                    try{
+                        taobaoProductInfoResponse = taobaoProductService.getTaobaoProductInfoByImgUrl(thumbUrl);
+                    }
+                    catch(Exception e2){
+                        log.error("taobaoProductInfoResponse.getData()，用图片搜商品也没找到数据,这样，data=‘搜索成功，但无结果’ ");
+                    }
+                    // 如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 end
+
+                    try{
                         TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                                 pddProductUrl(pddUrl.getProductUrl()).tapBaoProductUrl(null).spiderDate(new Date())
                                 .thumbUrl(thumbUrl).build();
