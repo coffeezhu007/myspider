@@ -116,19 +116,19 @@ public class SpiderServiceImpl implements SpiderService {
                     }
                     catch(Exception e2){
                         log.error("taobaoProductInfoResponse.getData()，用图片搜商品也没找到数据,这样，data=‘搜索成功，但无结果’ ");
+                        try{
+                            TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
+                                    pddProductUrl(pddUrl.getProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
+                                    .status(StatusEnum.MO_RESULT.getValue()).thumbUrl(thumbUrl).build();
+                            taobaoProductDao.save(taobaoProductsUrlEntity);
+                        }
+                        catch (Exception e3){
+                            log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e3.getMessage());
+                            throw e3;
+                        }
+                        return;
                     }
                     // 如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 end
-
-                    try{
-                        TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
-                                pddProductUrl(pddUrl.getProductUrl()).tapBaoProductUrl(null).spiderDate(new Date())
-                                .thumbUrl(thumbUrl).build();
-                        taobaoProductDao.save(taobaoProductsUrlEntity);
-                    }
-                    catch (Exception e2){
-                        log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e2.getMessage());
-                        throw e2;
-                    }
                 }
 
                 List<TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem> taobaoProductInfoFeignDataList = null;
@@ -161,8 +161,8 @@ public class SpiderServiceImpl implements SpiderService {
                     pddProductDao.updatePinduoduoProductUrlStatus(StatusEnum.MO_RESULT.getValue(),pddUrl.getProductUrl());
 
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
-                            pddProductUrl(pddUrl.getProductUrl()).tapBaoProductUrl(null).spiderDate(new Date())
-                            .thumbUrl(thumbUrl).build();
+                            pddProductUrl(pddUrl.getProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
+                            .status(StatusEnum.MO_RESULT.getValue()).thumbUrl(thumbUrl).build();
                     try{
                         taobaoProductDao.save(taobaoProductsUrlEntity);
                     }
@@ -183,9 +183,8 @@ public class SpiderServiceImpl implements SpiderService {
                     log.info("最后得到的最优质的淘宝地址为======"+taobaoUrl);
 
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
-                            pddProductUrl(pddUrl.getProductUrl()).tapBaoProductUrl(null).spiderDate(new Date())
-                            .thumbUrl(thumbUrl).build();
-
+                            pddProductUrl(pddUrl.getProductUrl()).taoBaoProductUrl(taobaoUrl).spiderDate(new Date())
+                            .status(StatusEnum.SUCCESS.getValue()).thumbUrl(thumbUrl).build();
                     try{
                         pddProductDao.updatePinduoduoProductUrlStatus(StatusEnum.SUCCESS.getValue(),pddUrl.getProductUrl());
                     }

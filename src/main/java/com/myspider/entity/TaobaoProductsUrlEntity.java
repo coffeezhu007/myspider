@@ -29,7 +29,7 @@ public class TaobaoProductsUrlEntity {
     private String thumbUrl ;  // 图片url
 
     @Column(name="taobao_product_url")
-    private String tapBaoProductUrl;
+    private String taoBaoProductUrl;
 
     @Column(name="spider_date")
     private Date spiderDate ;
