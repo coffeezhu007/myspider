@@ -105,17 +105,19 @@ public class SpiderServiceImpl implements SpiderService {
                 TaobaoProductInfoFeignResponse taobaoProductInfoResponse =  null;
 
                 try{
+                    log.info("开始用淘宝API，进行按商品名称，价钱，销量去调接口并查找商品！！！");
                     taobaoProductInfoResponse = taobaoProductService.getTaobaoProduct(goodsName,"1",goodsPrice,minPageNumber,pageSize,"sale");
 
                     if(null ==taobaoProductInfoResponse.getData().getItemData() || taobaoProductInfoResponse.getData().getItemData().size() ==0 ){
 
                         // 如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start
                         try{
+                            log.info("开始用淘宝API，进行按商品的图片进行调接口并查找商品！！！");
                             taobaoProductInfoResponse = taobaoProductService.getTaobaoProductInfoByImgUrl(thumbUrl);
 
                             if(null != taobaoProductInfoResponse.getData().getError() &&  !"".equals(taobaoProductInfoResponse.getData().getError())  ){
 
-                                log.error("用图片搜商品也没找到数据,这样，data=‘搜索成功，但无结果’ ");
+                                log.info("用图片搜商品也没找到数据,这样，data=‘搜索成功，但无结果’ ");
 
                                 TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                                         pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
