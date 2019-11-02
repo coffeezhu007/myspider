@@ -119,6 +119,7 @@ public class SpiderServiceImpl implements SpiderService {
 
                                 TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                                         pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
+                                        .pddProductName(goodsName).pddProductPrice(new BigDecimal(goodsPrice))
                                         .status(StatusEnum.NO_TAOBAO_PRODUCT.getValue()).thumbUrl(thumbUrl).build();
                                 try{
                                     taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
@@ -172,6 +173,7 @@ public class SpiderServiceImpl implements SpiderService {
 
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                             pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
+                            .pddProductName(goodsName).pddProductPrice(new BigDecimal(goodsPrice))
                             .status(StatusEnum.TAOBAO_PRODUCT_CHECK_FAILED.getValue()).thumbUrl(thumbUrl).build();
                     try{
                         taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
@@ -194,6 +196,7 @@ public class SpiderServiceImpl implements SpiderService {
 
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                             pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(taobaoUrl).spiderDate(new Date())
+                            .pddProductName(goodsName).pddProductPrice(new BigDecimal(goodsPrice))
                             .status(StatusEnum.SUCCESS.getValue()).thumbUrl(thumbUrl).build();
                     try{
                         taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
@@ -206,7 +209,7 @@ public class SpiderServiceImpl implements SpiderService {
                 //第五步 最后按这个要求对比，从有销量的商品中，再找一个价格最低的那个淘宝网址就是想要的 end
 
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

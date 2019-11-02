@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -37,6 +38,11 @@ public class TaobaoProductsUrlEntity {
     @Column(name="spider_date")
     private Date spiderDate ;
 
+    @Column(name="pdd_product_name",length = 64)
+    private String pddProductName;
+
+    @Column(name="pdd_product_price",length = 10)
+    private BigDecimal pddProductPrice;
 
     @Column(name="status",length = 1)
     private Integer status ;  // 预留暂时没有使用
