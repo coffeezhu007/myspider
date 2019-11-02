@@ -13,7 +13,8 @@ public interface TaobaoProductDao extends JpaRepository<TaobaoProductsUrlEntity,
     List<TaobaoProductsUrlEntity> findByStatusOrderByIdAsc(Integer status);
 
     String UPDATE_TAOBAO_PRODUCT = "UPDATE T_TAOBAO_GOODS_URL SET STATUS = :#{#entity.status},SPIDER_DATE = :#{#entity.spiderDate} , " +
-            "TAOBAO_PRODUCT_URL = :#{#entity.taoBaoProductUrl}, PDD_PRODUCT_PIC_URL = :#{#entity.thumbUrl} WHERE PDD_PRODUCT_URL = :#{#entity.pddProductUrl}";
+            "TAOBAO_PRODUCT_URL = :#{#entity.taoBaoProductUrl}, PDD_PRODUCT_PIC_URL = :#{#entity.thumbUrl},PDD_PRODUCT_NAME=:#{#entity.pddProductName}" +
+            ",TAOBAO_PRODUCT_PRICE = :#{#entity.pddProductPrice} WHERE PDD_PRODUCT_URL = :#{#entity.pddProductUrl}";
     @Modifying
     @Query(value=UPDATE_TAOBAO_PRODUCT,nativeQuery = true)
     void updateTaobaoProduct(@Param("entity") TaobaoProductsUrlEntity taobaoProductsUrlEntity);
