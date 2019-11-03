@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@PropertySource(value = {"file:${APP_HOME_CONF}/application.properties"})
+//@PropertySource(value = {"file:${APP_HOME_CONF}/application.properties"})
 @EnableCaching
 @ComponentScan(value = {"com.myspider.component", "com.myspider"})
 @EntityScan(basePackages = "com.myspider.entity")

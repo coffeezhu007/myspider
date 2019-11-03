@@ -193,6 +193,36 @@
             <version>0.1.4</version>
         </dependency>
 
-
     </dependencies>
+
+    <!--插件，可以将应用打包成一个可执行的jar包-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.myspider.MySpiderApplication</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
 </project>
