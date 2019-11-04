@@ -104,7 +104,7 @@ public class SpiderServiceImpl implements SpiderService {
                 //  第一层限定，找到的淘宝商品是小于等于我拼多多的商品的价格的
                 TaobaoProductInfoFeignResponse taobaoProductInfoResponse =  null;
 
-                try{
+                /*try{
                     log.info("开始用淘宝API，进行按商品名称，价钱，销量去调接口并查找商品！！！");
                     taobaoProductInfoResponse = taobaoProductService.getTaobaoProduct(goodsName,"1",goodsPrice,minPageNumber,pageSize,"sale");
 
@@ -142,7 +142,37 @@ public class SpiderServiceImpl implements SpiderService {
                 }
                 catch (Exception e){
                     log.error("淘宝用商品名字搜索商品发生异常,原因是===[{}] ",e.getMessage());
+                }*/
+
+                // 如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 start
+                try{
+                    log.info("开始用淘宝API，进行按商品的图片进行调接口并查找商品！！！");
+                    taobaoProductInfoResponse = taobaoProductService.getTaobaoProductInfoByImgUrl(thumbUrl);
+
+                    if(null != taobaoProductInfoResponse.getData().getError() &&  !"".equals(taobaoProductInfoResponse.getData().getError())  ){
+
+                        log.info("用图片搜商品也没找到数据,这样，data=‘搜索成功，但无结果’ ");
+
+                        TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
+                                pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
+                                .pddProductName(goodsName).pddProductPrice(new BigDecimal(goodsPrice))
+                                .status(StatusEnum.NO_TAOBAO_PRODUCT.getValue()).thumbUrl(thumbUrl).build();
+                        try{
+                            taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
+                        }
+                        catch (Exception e){
+                            log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
+                            throw e;
+                        }
+                        return;
+                    }
+
                 }
+                catch(Exception e){
+                    log.error("淘宝用拼多多图片搜索商品发生异常,原因是===[{}] ",e.getMessage());
+                }
+                // 如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 end
+
 
                 List<TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem> taobaoProductInfoFeignDataList = null;
 
@@ -193,6 +223,9 @@ public class SpiderServiceImpl implements SpiderService {
                     String taobaoUrl = "";
                     if(! lowestTaobaoProductDataItem.getDetailUrl().startsWith("http://")  && ! lowestTaobaoProductDataItem.getDetailUrl().startsWith("https://") ){
                         taobaoUrl =  "http:"+lowestTaobaoProductDataItem.getDetailUrl();
+                    }
+                    else{
+                        taobaoUrl = lowestTaobaoProductDataItem.getDetailUrl();
                     }
                     log.info("最后得到的最优质的淘宝地址为======"+taobaoUrl);
 
