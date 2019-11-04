@@ -170,6 +170,7 @@ public class SpiderServiceImpl implements SpiderService {
                 }
                 catch(Exception e){
                     log.error("淘宝用拼多多图片搜索商品发生异常,原因是===[{}] ",e.getMessage());
+                    return;
                 }
                 // 如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 end
 
@@ -188,7 +189,7 @@ public class SpiderServiceImpl implements SpiderService {
                             // 得到该商品是不是包邮，如果包邮的以及有销量的,并且价格小于等于拼多多的，扔到taobaoProductInfoDataList 集合里面 start
                             BigDecimal delivery = taobaoProductInfoFeignData.getPostFee();
 
-                            if((null ==delivery || BigDecimal.valueOf(0.00d).equals(delivery) )   && taobaoProductInfoFeignData.getSales()>0
+                            if( BigDecimal.valueOf(0.00d).equals(delivery) && taobaoProductInfoFeignData.getSales()>0
                                     &&  taobaoProductInfoFeignData.getPrice().compareTo( new BigDecimal(goodsPrice)) <=0 ){
                                 taobaoProductInfoDataList.add(taobaoProductInfoFeignData);
                             }
