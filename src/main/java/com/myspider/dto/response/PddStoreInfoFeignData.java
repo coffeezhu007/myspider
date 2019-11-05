@@ -17,6 +17,6 @@ public class PddStoreInfoFeignData  implements Serializable {
 
 
     private Integer mallId; //商铺id
-    private String salesTip; //销售提示
+    private Integer mallSales; //销售提示
     private Integer goodsNum; //货品数量
 }

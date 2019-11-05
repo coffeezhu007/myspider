@@ -23,8 +23,8 @@ public class PddStoreInfoEntity {
 
     @Column(name="store_id")
     private String storeId; //店铺id
-    @Column(name="sales_tip")
-    private String salesTip; //销售提示(里面包含销量)
+    @Column(name="malll_sales")
+    private String mallSales; //销售提示(里面包含销量)
     @Column(name="goodsNum")
     private String goodsNum; //商品数量
     @Column(name="cdate")
