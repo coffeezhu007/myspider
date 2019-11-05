@@ -18,7 +18,7 @@ public class SpiderPddStoreController {
 
 
     @Autowired
-    private SpiderPddStoreService pddStoreService;
+    private SpiderPddStoreService spiderPddStoreService;
 
     @RequestMapping(value="/spider_pdd_store",method = RequestMethod.GET)
     public String goSpider(){
@@ -34,8 +34,8 @@ public class SpiderPddStoreController {
         resultMap.put("status",false);
 
         try{
-            pddStoreService.savePddStoreInfo(pddStoreForm);
-            resultMap.put("status",false);
+            spiderPddStoreService.savePddStoreInfo(pddStoreForm);
+            resultMap.put("status",true);
         }
         catch(Exception e){
             throw e;

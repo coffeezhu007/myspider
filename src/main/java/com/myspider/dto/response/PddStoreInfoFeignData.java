@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 public class PddStoreInfoFeignData  implements Serializable {
 
 
-    private Integer mallId; //商铺id
-    private Integer mallSales; //销售提示
-    private Integer goodsNum; //货品数量
+    private Long mallId; //商铺id
+    private Long mallSales; //销售提示
+    private Long goodsNum; //货品数量
 }

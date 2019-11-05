@@ -46,10 +46,10 @@ public class SpiderPddStoreServiceImpl implements SpiderPddStoreService {
 
                         pddStoreInfoData = storeInfoResponse.getPddStoreInfoFeignData();
 
-                        if(pddStoreInfoData.getGoodsNum().intValue() >= pddStoreForm.getProductCountStart().intValue()
-                                && pddStoreInfoData.getGoodsNum().intValue() <=  pddStoreForm.getProductCountStart().intValue()
-                                && pddStoreInfoData.getMallSales().intValue() >= pddStoreForm.getSalesCountStart().intValue()
-                                && pddStoreInfoData.getMallSales().intValue() <= pddStoreForm.getSalesCountEnd().intValue() ){
+                        if(pddStoreInfoData.getGoodsNum() >= pddStoreForm.getProductCountStart()
+                                && pddStoreInfoData.getGoodsNum()<=  pddStoreForm.getProductCountEnd()
+                                && pddStoreInfoData.getMallSales() >= pddStoreForm.getSalesCountStart()
+                                && pddStoreInfoData.getMallSales() <= pddStoreForm.getSalesCountEnd() ){
 
                             PddStoreInfoEntity storeInfoEntity = PddStoreInfoEntity.builder()
                                     .storeId(String.valueOf(pddStoreInfoData.getMallId()))
