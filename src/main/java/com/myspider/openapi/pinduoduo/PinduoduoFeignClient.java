@@ -32,6 +32,6 @@ public interface PinduoduoFeignClient {
      *@Date:15:16 15:16
      */
     @GetMapping("/pdd/info")
-    PddStoreInfoFeignResponse findProductDetail(@RequestParam("apikey") String apiKey, @RequestParam("mallId") String mallId);
+    PddStoreInfoFeignResponse findPinduoduoStoreInfo(@RequestParam("apikey") String apiKey, @RequestParam("mallId") String mallId);
 
 }

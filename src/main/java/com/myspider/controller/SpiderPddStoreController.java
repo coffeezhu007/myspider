@@ -1,7 +1,9 @@
 package com.myspider.controller;
 
 import com.myspider.dto.request.SpiderPddStoreForm;
+import com.myspider.service.SpiderPddStoreService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +16,9 @@ import java.util.Map;
 @Controller
 public class SpiderPddStoreController {
 
+
+    @Autowired
+    private SpiderPddStoreService pddStoreService;
 
     @RequestMapping(value="/spider_pdd_store",method = RequestMethod.GET)
     public String goSpider(){
@@ -28,6 +33,13 @@ public class SpiderPddStoreController {
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("status",false);
 
+        try{
+            pddStoreService.savePddStoreInfo(pddStoreForm);
+            resultMap.put("status",false);
+        }
+        catch(Exception e){
+            throw e;
+        }
         return resultMap;
     }
 }
