@@ -26,6 +26,11 @@ public interface PinduoduoFeignClient {
     @GetMapping("/pdd/detail")
     PinduoduoProductDetailFeignResponse findProductDetail(@RequestParam("apikey") String apiKey, @RequestParam("itemid") Long goodsId);
 
+    /**
+     *@Author:朱振兴
+     *@Description:调用拼多多第三方接口的FeignClient---获取店铺信息
+     *@Date:15:16 15:16
+     */
     @GetMapping("/pdd/info")
     PddStoreInfoFeignResponse findProductDetail(@RequestParam("apikey") String apiKey, @RequestParam("mallId") String mallId);
 
