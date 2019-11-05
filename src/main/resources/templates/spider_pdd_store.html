@@ -6,22 +6,59 @@
 </head>
 <body>
     <div>
-        <div align="center">拼多多店铺采集设置</div>
+        <form id="spider_pdd_storm_form">
+            <div align="center">拼多多店铺采集设置</div>
 
-        <div align="center" style="margin-top: 10px;">
-            <label>商品开始ID:</label><input type="text" name="productIdStart" >
-            <label>商品结束ID:</label><input type="text" name="productIdEnd" >
-        </div>
+            <div align="center" style="margin-top: 10px;">
+                <label>商品开始ID:</label><input type="text" name="productIdStart" >
+                <label>商品结束ID:</label><input type="text" name="productIdEnd" >
+            </div>
 
-        <div align="center" style="margin-top: 10px;">
-            <div style="margin-top: 5px;">商品数与销量之间</div>
-            <div style="margin-top: 5px;">商品数:<input type="text" name="productCountStart">-<input type="text" name="productCountEnd"></div>
-            <div style="margin-top: 5px;position: relative" >销量:<input type="text" name="salesCountStart">-<input type="text" name="salesCountEnd"></div>
-         </div>
-        <div align="center" style="margin-top: 5px;position: relative"><button type="button" id="spider_pdd_store_btn">开始采集</button> </div>
+            <div align="center" style="margin-top: 10px;">
+                <div style="margin-top: 5px;">商品数与销量之间</div>
+                <div style="margin-top: 5px;">商品数:<input type="text" name="productCountStart">-<input type="text" name="productCountEnd"></div>
+                <div style="margin-top: 5px;position: relative" >销量:<input type="text" name="salesCountStart">-<input type="text" name="salesCountEnd"></div>
+            </div>
+
+            <div align="center" style="margin-top: 5px;position: relative"><button type="button" id="spider_pdd_store_btn">开始采集</button> </div>
+        </form>
+
+
 
 
     </div>
+
+    <script type="text/javascript" src="static/js/jquery-3.2.1.js"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+
+            $("#spider_pdd_store_btn").bind('click',function(){
+
+                $.ajax({
+                    url: 'gospider_pdd_store',
+                    type: 'post',
+                    data: $("#spider_pdd_storm_form").serialize(),
+                    cache: false,
+                    dataType:'json',
+                }).done(function(res) {
+                    if(res.status){
+                        alert("拼多多店铺数据采集完成，请查看数据库表！！！");
+                    }
+                    else{
+                        alert("拼多多店铺数据采集失败，请查看数据库表！！！");
+                    }
+                }).fail(function(res) {
+                    alert("后台程序异常!");
+                });
+
+            });
+
+
+        });
+
+    </script>
 
 </body>
 </html>
