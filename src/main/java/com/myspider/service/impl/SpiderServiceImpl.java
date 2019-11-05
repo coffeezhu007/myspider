@@ -93,6 +93,18 @@ public class SpiderServiceImpl implements SpiderService {
                 }
                 catch (Exception e){
                     log.error("拼多多通过商品ID搜索商品发生异常,原因是===[{}] ",e.getMessage());
+
+                    TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
+                            pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
+                            .pddProductName(goodsName).pddProductPrice(new BigDecimal(goodsPrice))
+                            .status(StatusEnum.API_EXCEPTION.getValue()).thumbUrl(thumbUrl).build();
+                    try{
+                        taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
+                    }
+                    catch (Exception e2){
+                        log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
+                        return;
+                    }
                     return;
                 }
                 // 第三步，通过第三方平台的API（拼多多商品详细API）得到拼多多该产品的所有信息 end
@@ -170,7 +182,19 @@ public class SpiderServiceImpl implements SpiderService {
                 }
                 catch(Exception e){
                     log.error("淘宝用拼多多图片搜索商品发生异常,原因是===[{}] ",e.getMessage());
+
+                    TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
+                            pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
+                            .pddProductName(goodsName).pddProductPrice(new BigDecimal(goodsPrice))
+                            .status(StatusEnum.API_EXCEPTION.getValue()).thumbUrl(thumbUrl).build();
+                    try{
+                        taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
+                    }
+                    catch (Exception e2){
+                        log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
+                    }
                     return;
+
                 }
                 // 如果按索商品搜不到商品再用淘立拍接口再次精确的搜一下商品 end
 
