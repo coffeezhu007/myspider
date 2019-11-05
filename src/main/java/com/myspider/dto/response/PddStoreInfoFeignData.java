@@ -15,38 +15,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class PddStoreInfoFeignData  implements Serializable {
 
-    @JsonProperty("seller")
-    private PddStoreInfoFeignDataSeller sellerData;
 
-
-    @JsonProperty("item")
-    private PddStoreInfoFeignDataItem itemData;
-
-
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class PddStoreInfoFeignDataSeller implements Serializable{
-        private String shopId;
-        private String salesTip;
-        private String goodsNum;
-    }
-
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class PddStoreInfoFeignDataItem implements Serializable{
-
-        private String url;
-        private String maxGroupPrice;
-        private String minGroupPrice;
-        private String thumbUrl;
-        private String salesTip;
-        private String goodsName;
-        private String goodsDesc;
-    }
+    private Integer mallId; //商铺id
+    private String salesTip; //销售提示
+    private Integer goodsNum; //货品数量
 }

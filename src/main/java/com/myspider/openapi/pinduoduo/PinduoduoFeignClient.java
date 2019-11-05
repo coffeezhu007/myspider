@@ -25,4 +25,8 @@ public interface PinduoduoFeignClient {
     @GetMapping("/pdd/detail")
     PinduoduoProductDetailFeignResponse findProductDetail(@RequestParam("apikey") String apiKey, @RequestParam("itemid") Long goodsId);
 
+
+    @GetMapping("/pdd/info")
+    PinduoduoProductDetailFeignResponse findProductDetail(@RequestParam("apikey") String apiKey, @RequestParam("itemid") Long goodsId);
+
 }
