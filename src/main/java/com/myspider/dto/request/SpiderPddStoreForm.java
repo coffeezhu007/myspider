@@ -12,10 +12,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class SpiderPddStoreForm implements Serializable {
 
-    private Integer productIdStart;
-    private Integer productIdEnd;
-    private Integer productCountStart;
-    private Integer productCountEnd;
-    private Integer salesCountStart;
-    private Integer salesCountEnd;
+    private Long productIdStart;
+    private Long productIdEnd;
+    private Long productCountStart;
+    private Long productCountEnd;
+    private Long salesCountStart;
+    private Long salesCountEnd;
 }

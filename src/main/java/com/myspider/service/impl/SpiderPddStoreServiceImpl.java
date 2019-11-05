@@ -35,7 +35,7 @@ public class SpiderPddStoreServiceImpl implements SpiderPddStoreService {
         PddStoreInfoFeignData  pddStoreInfoData = null;
 
         // 从商品ID 开始的值到结束的值去拼拼里循环去碰.
-        for(int i= pddStoreForm.getProductIdStart();i<=pddStoreForm.getProductIdEnd();i++){
+        for(long i= pddStoreForm.getProductIdStart();i<=pddStoreForm.getProductIdEnd();i++){
 
             try{
                 storeInfoResponse = pinduoduoFeignClient.findPinduoduoStoreInfo(apiKey,String.valueOf(i)) ;
