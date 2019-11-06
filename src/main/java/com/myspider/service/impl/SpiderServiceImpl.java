@@ -133,7 +133,6 @@ public class SpiderServiceImpl implements SpiderService {
                         }
                         catch (Exception e){
                             log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
-                            throw e;
                         }
                         return;
                     }
@@ -197,7 +196,6 @@ public class SpiderServiceImpl implements SpiderService {
                     }
                     catch (Exception e){
                         log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
-                        throw e;
                     }
                     return ;
                 }else{
@@ -224,7 +222,6 @@ public class SpiderServiceImpl implements SpiderService {
                     }
                     catch (Exception e){
                         log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
-                        throw e;
                     }
                     return;
                 }
