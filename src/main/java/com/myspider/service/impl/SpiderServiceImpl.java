@@ -103,7 +103,6 @@ public class SpiderServiceImpl implements SpiderService {
                     }
                     catch (Exception e2){
                         log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
-                        return;
                     }
                     return;
                 }
@@ -200,6 +199,7 @@ public class SpiderServiceImpl implements SpiderService {
                         log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
                         throw e;
                     }
+                    return ;
                 }else{
                     taobaoProductInfoDataList.sort((TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem data1,TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem data2)->
                             data1.getPromotionPrice().compareTo(data2.getPrice())  );
@@ -226,14 +226,15 @@ public class SpiderServiceImpl implements SpiderService {
                         log.error("往taobaoUrl表中插入数据失败,原因是:[{}]",e.getMessage());
                         throw e;
                     }
+                    return;
                 }
                 //第五步 最后按这个要求对比，从有销量的商品中，再找一个价格最低的那个淘宝网址就是想要的 end
-
+                /*
                 try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
             });
 
             result = Boolean.TRUE;
