@@ -100,15 +100,7 @@ public class ImageUtils {
             }
             i++;
         }
-        String baifen = "";
-        try {
-            baifen = ((Double.parseDouble(xiangsi + "") / Double.parseDouble((busi + xiangsi) + "")) + "");
-            baifen = baifen.substring(baifen.indexOf(".") + 1, baifen.indexOf(".") + 3);
-        } catch (Exception e) {
-           return false;
-        }
 
-        log.info("相似像素数量：" + xiangsi + " 不相似像素数量：" + busi + " 相似率：" + Integer.parseInt(baifen) + "%");
         if(busi >=30){
             return false;
         }
@@ -116,6 +108,13 @@ public class ImageUtils {
             return true;
         }
 
+    }
+
+    public static void main(String[] args) {
+        String img1 = "C:\\zzx\\杂货铺\\img1.png";
+        String img2 = "C:\\zzx\\杂货铺\\img2.png";
+        boolean result = ImageUtils.compareImage(img1,img2);
+        System.out.println(result);
     }
 
 }
