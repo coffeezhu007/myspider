@@ -34,7 +34,7 @@ public class SpiderTokenServiceImpl implements SpiderTokenService {
 
         try{
             for(int i=0; i<=1000;i++){
-                SpiderTokenEntity entity = SpiderTokenEntity.builder().token(this.getToken(60)).createDate(new Date()).build();
+                SpiderTokenEntity entity = SpiderTokenEntity.builder().token(this.getToken(59)).createDate(new Date()).build();
                 spiderTokenDao.save(entity);
             }
             return true;
