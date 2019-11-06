@@ -174,7 +174,7 @@ public class SpiderServiceImpl implements SpiderService {
                             BigDecimal delivery = taobaoProductInfoFeignData.getPostFee();
                             if(null != delivery){
                                 if( BigDecimal.valueOf(0.00d).compareTo(delivery) ==0 && taobaoProductInfoFeignData.getSales()>0
-                                        &&  taobaoProductInfoFeignData.getPrice().compareTo( new BigDecimal(goodsPrice)) <=0 ){
+                                        &&  taobaoProductInfoFeignData.getPrice().compareTo( new BigDecimal(goodsPrice)) <0 ){
                                     taobaoProductInfoDataList.add(taobaoProductInfoFeignData);
                                 }
                             }
