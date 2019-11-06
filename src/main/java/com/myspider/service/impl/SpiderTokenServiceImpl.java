@@ -33,7 +33,7 @@ public class SpiderTokenServiceImpl implements SpiderTokenService {
     public boolean generateToken() {
 
         try{
-            for(int i=0; i<=1000;i++){
+            for(int i=1; i<=1000;i++){
                 SpiderTokenEntity entity = SpiderTokenEntity.builder().token(this.getToken(59)).createDate(new Date()).build();
                 spiderTokenDao.save(entity);
             }
@@ -58,9 +58,15 @@ public class SpiderTokenServiceImpl implements SpiderTokenService {
         Random rand = new Random();
         for (int i = 0; i < length; i++) {
 
-            if(i<=52){
+            // 前51个字母是大写
+            if(i<=51){
                 sb.append(  STR_ARR[rand.nextInt(STR_ARR.length)].toUpperCase() );
             }
+            // 52到53二个必须是1
+            else if(i>51 && i<=53){
+                sb.append("1");
+            }
+            // 54-59可以是数学或字母
             else{
                 sb.append(  STR_ARR[rand.nextInt(STR_ARR.length)].toLowerCase() );
             }
