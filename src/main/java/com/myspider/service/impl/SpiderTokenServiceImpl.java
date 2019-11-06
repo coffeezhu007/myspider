@@ -58,11 +58,11 @@ public class SpiderTokenServiceImpl implements SpiderTokenService {
         Random rand = new Random();
         for (int i = 0; i < length; i++) {
 
-            if(i<=53){
+            if(i<=52){
                 sb.append(  STR_ARR[rand.nextInt(STR_ARR.length)].toUpperCase() );
             }
             else{
-                sb.append(  STR_ARR[rand.nextInt(STR_ARR.length)] );
+                sb.append(  STR_ARR[rand.nextInt(STR_ARR.length)].toLowerCase() );
             }
         }
         return sb.toString();
