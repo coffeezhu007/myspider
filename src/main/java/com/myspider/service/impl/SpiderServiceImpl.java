@@ -172,10 +172,11 @@ public class SpiderServiceImpl implements SpiderService {
                         for(TaobaoProductInfoFeignData.TaobaoProductInfoFeignDataItem taobaoProductInfoFeignData: taobaoProductInfoFeignDataList ){
                             // 得到该商品是不是包邮，如果包邮的以及有销量的,并且价格小于等于拼多多的，扔到taobaoProductInfoDataList 集合里面 start
                             BigDecimal delivery = taobaoProductInfoFeignData.getPostFee();
-
-                            if( BigDecimal.valueOf(0.00d).equals(delivery) && taobaoProductInfoFeignData.getSales()>0
-                                    &&  taobaoProductInfoFeignData.getPrice().compareTo( new BigDecimal(goodsPrice)) <=0 ){
-                                taobaoProductInfoDataList.add(taobaoProductInfoFeignData);
+                            if(null != delivery){
+                                if( BigDecimal.valueOf(0.00d).compareTo(delivery) ==0 && taobaoProductInfoFeignData.getSales()>0
+                                        &&  taobaoProductInfoFeignData.getPrice().compareTo( new BigDecimal(goodsPrice)) <=0 ){
+                                    taobaoProductInfoDataList.add(taobaoProductInfoFeignData);
+                                }
                             }
                             // 得到该商品是不是包邮，如果包邮的以及有销量的,并且价格小于等于拼多多的扔到taobaoProductInfoDataList 集合里面 end
                         }
@@ -240,4 +241,10 @@ public class SpiderServiceImpl implements SpiderService {
         return result;
     }
 
+    /*
+    public static void main(String[] args) {
+        BigDecimal b1 = null;
+        System.out.println(BigDecimal.valueOf(0.00d).compareTo(b1)    );
+
+    }*/
 }
