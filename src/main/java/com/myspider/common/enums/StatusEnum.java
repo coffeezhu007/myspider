@@ -4,7 +4,7 @@ public enum StatusEnum {
 
     UNSPIDER("unspider", 0), SUCCESS("spider_success", 1),
     NO_TAOBAO_PRODUCT("no_result", 2),TAOBAO_PRODUCT_CHECK_FAILED("check_failed", 3),
-    API_EXCEPTION("api_exception", 4);
+    PDD_API_EXCEPTION("pdd_api_exception", 4),TAOBAO_API_EXCEPTION("taobao_api_exception", 5);
 
     private StatusEnum(String code, int value) {
         this.code = code;

@@ -96,8 +96,8 @@ public class SpiderServiceImpl implements SpiderService {
 
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                             pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
-                            .pddProductName(goodsName).pddProductPrice(new BigDecimal(goodsPrice))
-                            .status(StatusEnum.API_EXCEPTION.getValue()).thumbUrl(thumbUrl).build();
+                            .pddProductName(null).pddProductPrice(null)
+                            .status(StatusEnum.PDD_API_EXCEPTION.getCode()).thumbUrl(thumbUrl).build();
                     try{
                         taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
                     }
@@ -127,7 +127,7 @@ public class SpiderServiceImpl implements SpiderService {
                         TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                                 pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
                                 .pddProductName(goodsName).pddProductPrice(new BigDecimal(goodsPrice))
-                                .status(StatusEnum.NO_TAOBAO_PRODUCT.getValue()).thumbUrl(thumbUrl).build();
+                                .status(StatusEnum.NO_TAOBAO_PRODUCT.getCode()).thumbUrl(thumbUrl).build();
                         try{
                             taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
                         }
@@ -144,7 +144,7 @@ public class SpiderServiceImpl implements SpiderService {
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                             pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
                             .pddProductName(goodsName).pddProductPrice(new BigDecimal(goodsPrice))
-                            .status(StatusEnum.API_EXCEPTION.getValue()).thumbUrl(thumbUrl).build();
+                            .status(StatusEnum.TAOBAO_API_EXCEPTION.getCode()).thumbUrl(thumbUrl).build();
                     try{
                         taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
                     }
@@ -190,7 +190,7 @@ public class SpiderServiceImpl implements SpiderService {
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                             pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(null).spiderDate(new Date())
                             .pddProductName(goodsName).pddProductPrice(new BigDecimal(goodsPrice))
-                            .status(StatusEnum.TAOBAO_PRODUCT_CHECK_FAILED.getValue()).thumbUrl(thumbUrl).build();
+                            .status(StatusEnum.TAOBAO_PRODUCT_CHECK_FAILED.getCode()).thumbUrl(thumbUrl).build();
                     try{
                         taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
                     }
@@ -216,7 +216,7 @@ public class SpiderServiceImpl implements SpiderService {
                     TaobaoProductsUrlEntity taobaoProductsUrlEntity = TaobaoProductsUrlEntity.builder().
                             pddProductUrl(pddUrl.getPddProductUrl()).taoBaoProductUrl(taobaoUrl).spiderDate(new Date())
                             .pddProductName(goodsName).pddProductPrice(new BigDecimal(goodsPrice))
-                            .status(StatusEnum.SUCCESS.getValue()).thumbUrl(thumbUrl).build();
+                            .status(StatusEnum.SUCCESS.getCode()).thumbUrl(thumbUrl).build();
                     try{
                         taobaoProductDao.updateTaobaoProduct(taobaoProductsUrlEntity);
                     }

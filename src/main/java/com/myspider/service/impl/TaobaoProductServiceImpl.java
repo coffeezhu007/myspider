@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashMap;
 
 @Service
 @Slf4j
@@ -38,7 +36,7 @@ public class TaobaoProductServiceImpl implements TaobaoProductService {
     public void savePinduoduoUrlToDb(String pinduoduoUrl) {
 
         TaobaoProductsUrlEntity  taobaoProductsUrlEntity =
-                TaobaoProductsUrlEntity.builder().pddProductUrl(pinduoduoUrl).status(StatusEnum.UNSPIDER.getValue())
+                TaobaoProductsUrlEntity.builder().pddProductUrl(pinduoduoUrl).status(StatusEnum.UNSPIDER.getCode())
                 .createDate(new Date()).build();
         taobaoProductDao.save(taobaoProductsUrlEntity);
 
