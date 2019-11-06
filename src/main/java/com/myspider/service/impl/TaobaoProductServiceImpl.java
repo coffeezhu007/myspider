@@ -1,7 +1,6 @@
 package com.myspider.service.impl;
 
 import com.myspider.common.enums.StatusEnum;
-import com.myspider.dto.response.TaobaoProductDetailFeignResponse;
 import com.myspider.dto.response.TaobaoProductInfoFeignResponse;
 import com.myspider.entity.TaobaoProductsUrlEntity;
 import com.myspider.openapi.taobao.TaobaoFeignClient;
