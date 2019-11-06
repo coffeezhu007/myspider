@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>拼多多Token生成</title>
+</head>
+<body>
+
+<div align="center">拼多多Token生成</div>
+
+<button id="generate_token" type="button">生成Token</button>
+
+
+<script type="text/javascript" src="static/js/jquery-3.2.1.js"></script>
+
+<script type="text/javascript">
+    
+    $(function () {
+        $("#generate_token").bind('click',function(){
+
+            $.ajax({
+                url: 'generate_token',
+                type: 'get',
+                cache: false,
+                dataType:'json',
+            }).done(function(res) {
+                if(res.status){
+                    alert("生成拼多多Token成功，请查看数据库表！！！");
+                }
+                else{
+                    alert("生成拼多多Token失败！！！");
+                }
+            }).fail(function(res) {
+                alert("后台程序异常!");
+            });
+
+        });
+    })
+    
+</script>
+
+</body>
+</html>
