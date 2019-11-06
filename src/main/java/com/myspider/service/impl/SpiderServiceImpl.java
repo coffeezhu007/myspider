@@ -43,7 +43,7 @@ public class SpiderServiceImpl implements SpiderService {
 
         Boolean result = Boolean.FALSE;
 
-        List<TaobaoProductsUrlEntity> pddUrsList = taobaoProductDao.findByStatusOrderByIdAsc(StatusEnum.UNSPIDER.getValue());
+        List<TaobaoProductsUrlEntity> pddUrsList = taobaoProductDao.findByStatusOrderByIdAsc(StatusEnum.UNSPIDER.getCode());
 
         if(null != pddUrsList && pddUrsList.size() >0){
 

@@ -45,5 +45,5 @@ public class TaobaoProductsUrlEntity {
     private BigDecimal pddProductPrice;
 
     @Column(name="status",length = 50)
-    private String status ;  // 预留暂时没有使用
+    private String status ;
 }

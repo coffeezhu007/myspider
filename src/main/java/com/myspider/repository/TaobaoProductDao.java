@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface TaobaoProductDao extends JpaRepository<TaobaoProductsUrlEntity,Long> {
 
-    List<TaobaoProductsUrlEntity> findByStatusOrderByIdAsc(Integer status);
+    List<TaobaoProductsUrlEntity> findByStatusOrderByIdAsc(String status);
 
     String UPDATE_TAOBAO_PRODUCT = "UPDATE T_TAOBAO_GOODS_URL SET STATUS = :#{#entity.status},SPIDER_DATE = :#{#entity.spiderDate} , " +
             "TAOBAO_PRODUCT_URL = :#{#entity.taoBaoProductUrl}, PDD_PRODUCT_PIC_URL = :#{#entity.thumbUrl},PDD_PRODUCT_NAME=:#{#entity.pddProductName}" +
