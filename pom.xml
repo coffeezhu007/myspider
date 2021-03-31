@@ -26,7 +26,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
-        <guava.version>27.1-jre</guava.version>
+        <guava.version>29.0-jre</guava.version>
         <opentracing.jaeger.starter.version>0.2.2</opentracing.jaeger.starter.version>
         <opentracing.spring.cloud.starter.version>0.2.0</opentracing.spring.cloud.starter.version>
         <opentracing.spring.cloud.feign.starter>0.2.0</opentracing.spring.cloud.feign.starter>
@@ -137,7 +137,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>27.1-jre</version>
+            <version>29.0-jre</version>
         </dependency>
 
         <dependency>
